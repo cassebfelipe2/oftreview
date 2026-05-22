@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFT-Review · Tracker CBO 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0b;
+  --bg2: #111113;
+  --bg3: #18181c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #f0ede8;
+  --text2: #888580;
+  --text3: #555250;
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --gold-dim: rgba(201,168,76,0.12);
+  --red: #e05252;
+  --red-dim: rgba(224,82,82,0.12);
+  --amber: #d4933a;
+  --amber-dim: rgba(212,147,58,0.12);
+  --green: #4a9c6e;
+  --green-dim: rgba(74,156,110,0.12);
+  --blue: #4a82c4;
+  --blue-dim: rgba(74,130,196,0.12);
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* ── HEADER ── */
+.header {
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-left h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--gold2);
+  line-height: 1;
+}
+.header-left p {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+/* ── WEEK NAV ── */
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+}
+.week-nav button {
+  background: none;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.week-nav button:hover { background: var(--border); color: var(--text); }
+.week-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--gold);
+  min-width: 72px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-section { margin-bottom: 28px; }
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.progress-label { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+.progress-pct { font-size: 12px; color: var(--gold); font-family: 'JetBrains Mono', monospace; }
+.progress-track {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold2) 100%);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── STAT CARDS ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+@media(max-width: 560px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.stat-card .label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 6px;
+}
+.stat-card .value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-card .sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 3px;
+}
+.stat-card.accent { border-color: rgba(201,168,76,0.3); }
+.stat-card.accent .value { color: var(--gold2); }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.tab-btn:hover { color: var(--text2); background: var(--border); }
+.tab-btn.active { background: var(--bg3); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+
+/* ── TAB CONTENT ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── REVISION CARDS ── */
+.revision-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+.revision-card:hover { border-color: var(--border2); }
+.revision-card.interval-15 { border-left: 3px solid var(--red); }
+.revision-card.interval-45 { border-left: 3px solid var(--amber); }
+.revision-card.interval-90 { border-left: 3px solid var(--green); }
+.revision-card.interval-180 { border-left: 3px solid var(--blue); }
+
+.rc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.rc-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.rc-right { display: flex; align-items: center; gap: 8px; }
+.interval-badge {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+.badge-15 { background: var(--red-dim); color: var(--red); border: 1px solid rgba(224,82,82,0.2); }
+.badge-45 { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(212,147,58,0.2); }
+.badge-90 { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,156,110,0.2); }
+.badge-180 { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(74,130,196,0.2); }
+
+.rc-meta {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 6px;
+}
+.rc-meta span { color: var(--text2); }
+
+/* ── TOPICS TOGGLE ── */
+.topics-toggle {
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.15s;
+}
+.topics-toggle:hover { color: var(--gold); }
+.topics-toggle .arrow { transition: transform 0.2s; display: inline-block; }
+.topics-toggle.open .arrow { transform: rotate(90deg); }
+
+.topics-grid {
+  display: none;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.topics-grid.visible { display: flex; }
+.topic-chip {
+  font-size: 11px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── QUIZ SECTION ── */
+.quiz-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-top: 12px;
+}
+.quiz-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.quiz-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: end;
+}
+@media(max-width: 480px) { .quiz-form { grid-template-columns: 1fr; } }
+.quiz-input-group label {
+  display: block;
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.quiz-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+.quiz-input::-webkit-outer-spin-button,
+.quiz-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.quiz-input:focus { border-color: rgba(201,168,76,0.4); }
+.quiz-btn {
+  grid-column: 1 / -1;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold2);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.quiz-btn:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.5); }
+
+/* ── RESULT PILL ── */
+.result-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+.result-great { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,156,110,0.25); }
+.result-ok { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(212,147,58,0.25); }
+.result-low { background: var(--red-dim); color: var(--red); border: 1px solid rgba(224,82,82,0.25); }
+
+/* ── HISTORY TABLE ── */
+.history-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text3);
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hi-left { flex: 1; min-width: 0; }
+.hi-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.hi-meta { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+.hi-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.hi-del {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+.hi-del:hover { color: var(--red); }
+.score-great { color: var(--green); }
+.score-ok { color: var(--amber); }
+.score-low { color: var(--red); }
+
+/* ── CONTENT WEEK ── */
+.module-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--gold);
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+}
+.date-badge {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 16px;
+}
+
+/* ── ALL REVISIONS VIEW ── */
+.all-week-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.all-week-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  min-width: 38px;
+  padding-top: 5px;
+  text-align: right;
+}
+.all-week-pills { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+.all-pill {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  background: var(--bg2);
+}
+.all-pill.current-week { background: var(--gold-dim); border-color: rgba(201,168,76,0.3); color: var(--gold); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 100%;
+  max-width: 460px;
+  animation: modal-in 0.2s ease;
+}
+@keyframes modal-in {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em; }
+.modal-sub { font-size: 13px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 24px; }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.modal-input-group label {
+  display: block;
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.modal-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+.modal-input::-webkit-outer-spin-button,
+.modal-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.modal-input:focus { border-color: rgba(201,168,76,0.4); }
+.modal-preview {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-cancel {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-cancel:hover { border-color: var(--border2); color: var(--text2); }
+.btn-save {
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold2);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-save:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.5); }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text3);
+}
+.empty-state .icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+.empty-state p { font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+
+/* ── SCROLL ANIMATIONS ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.revision-card, .history-item {
+  animation: fade-up 0.25s ease both;
+}
+
+/* ── CLEAR BTN ── */
+.clear-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  float: right;
+}
+.clear-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* ── EXPORT BTN ── */
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.35);
+  color: var(--gold2);
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.export-btn:hover { background: rgba(201,168,76,0.22); border-color: rgba(201,168,76,0.55); }
+.export-btn:active { transform: scale(0.97); }
+.export-btn svg { flex-shrink: 0; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #1e1e22;
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  z-index: 200;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>OFT-REVIEW</h1>
+      <p>EXTENSIVE G7 · TÍTULO CBO 2026</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <button class="export-btn" onclick="exportPDF()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Relatório PDF
+      </button>
+      <div class="week-nav">
+        <button onclick="changeWeek(-1)" title="Semana anterior">&#8592;</button>
+        <div class="week-display" id="weekDisplay">S08</div>
+        <button onclick="changeWeek(1)" title="Próxima semana">&#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-meta">
+      <span class="progress-label">Progresso do extensivo</span>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card accent">
+      <div class="label">Semana</div>
+      <div class="value" id="statWeek">8</div>
+      <div class="sub" id="statDate">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Revisões hoje</div>
+      <div class="value" id="statRevCount">0</div>
+      <div class="sub">programadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Trilhas feitas</div>
+      <div class="value" id="statTrials">0</div>
+      <div class="sub">total histórico</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Acerto médio</div>
+      <div class="value" id="statAvg">—</div>
+      <div class="sub">geral</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('revisoes')">Revisões</button>
+    <button class="tab-btn" onclick="showTab('conteudo')">Conteúdo</button>
+    <button class="tab-btn" onclick="showTab('historico')">Histórico</button>
+    <button class="tab-btn" onclick="showTab('todas')">Todas</button>
+  </div>
+
+  <!-- TAB: REVISÕES -->
+  <div class="tab-panel active" id="panel-revisoes">
+    <div class="section-title">Revisões programadas — semana <span id="revWeekNum">8</span></div>
+    <div id="revisoes-list"></div>
+  </div>
+
+  <!-- TAB: CONTEÚDO -->
+  <div class="tab-panel" id="panel-conteudo">
+    <div class="section-title">Conteúdo novo — semana <span id="conteudoWeekNum">8</span></div>
+    <div id="conteudo-content"></div>
+  </div>
+
+  <!-- TAB: HISTÓRICO -->
+  <div class="tab-panel" id="panel-historico">
+    <div class="section-title">
+      Histórico de trilhas
+      <button class="clear-btn" onclick="clearHistory()">Limpar tudo</button>
+    </div>
+    <div id="historico-list"></div>
+  </div>
+
+  <!-- TAB: TODAS AS REVISÕES -->
+  <div class="tab-panel" id="panel-todas">
+    <div class="section-title">Cronograma completo de revisões</div>
+    <div id="todas-list"></div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: REGISTRAR TRILHA -->
+<div class="modal-overlay" id="trailModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Registrar trilha</div>
+    <div class="modal-sub" id="modalSub">Informe quantas questões você fez e acertou</div>
+    <div class="modal-row">
+      <div class="modal-input-group">
+        <label>Questões feitas</label>
+        <input type="number" class="modal-input" id="modalFeitas" min="0" placeholder="0" oninput="updateModalPreview()">
+      </div>
+      <div class="modal-input-group">
+        <label>Questões acertadas</label>
+        <input type="number" class="modal-input" id="modalAcertos" min="0" placeholder="0" oninput="updateModalPreview()">
+      </div>
+    </div>
+    <div class="modal-preview" id="modalPreview">
+      Preencha os campos acima
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveTrail()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+
+const SCHEDULE = {
+  1:{date:"09/03/2026",module:"Órbita",topics:["Abertura","Bases de Órbita","Inervação e Vascularização da Órbita","Anomalias Congênitas da Órbita","Doença Ocular Tireoidiana","Orbitopatias Inflamatórias e Infecciosas","Emergency: Atendimento Inicial no PS I","Emergency: Atendimento Inicial no PS II"]},
+  2:{date:"16/03/2026",module:"Órbita",topics:["Tumores Orbitários Benignos da Infância","Tumores Orbitários Malignos da Infância","Tumores Orbitários Benignos do Adulto","Tumores Orbitários Malignos do Adulto","Tumores Epiteliais da Glândula Lacrimal","Emergency: Trauma Orbitário","Cirurgia: Evisceração, Enucleação e Cavidade Anoftálmica"]},
+  3:{date:"23/03/2026",module:"Córnea, Conjuntiva e Esclera",topics:["Anatomia e Fisiologia da Córnea I","Anatomia e Fisiologia da Córnea II","Embriologia da Córnea","Malformações Congênitas da Córnea","PUK e Mooren","Outras Ceratites","Emergency: Queimadura Química Ocular"]},
+  4:{date:"30/03/2026",module:"Córnea, Conjuntiva e Esclera",topics:["Ceratite Bacteriana","Ceratite Fúngica","Ceratite Acanthamoeba","Ceratite Herpética","Herpes Zoster Oftálmico","Alergia Ocular","Farmacologia dos Anti-inflamatórios / Anti-alérgicos"]},
+  5:{date:"06/04/2026",module:"Córnea, Conjuntiva e Esclera",topics:["Distrofias do Epitélio da Córnea","Distrofias Epiteliais-Estromais","Distrofias do Estroma da Córnea","Distrofias do Endotélio da Córnea","Propedêutica de Córnea","Ectasias da Córnea I","Ectasias da Córnea II","Emergency: Trauma Ocular – Classificação de BETT"]},
+  6:{date:"13/04/2026",module:"Córnea, Conjuntiva e Esclera",topics:["Degenerações da Córnea","Banco de Olhos e Transplante de Córnea","Transplantes Lamelares","Transplantes Penetrantes","Emergency: Trauma Aberto do Segmento Anterior – Laceração de Córnea e Esclera"]},
+  7:{date:"20/04/2026",module:"Córnea, Conjuntiva e Esclera",topics:["Bases de Conjuntiva, Limbo e Tenon","Síndromes Foliculares","Conjuntivites Cicatriciais Crônicas","Outras Doenças da Conjuntiva","Bases de Esclera","Esclerites e Episclerites","Cirurgia: Pterígio"]},
+  8:{date:"27/04/2026",module:"Cristalino",topics:["Bases do Cristalino","Pré-operatório","Alterações Congênitas do Cristalino I","Alterações Congênitas do Cristalino II","Cataratas Especiais e Fatores de Risco","Cirurgia: Bloqueios Anestésicos","Cirurgia: Viscoelásticos"]},
+  9:{date:"04/05/2026",module:"Cristalino",topics:["Fluídica e Aparelho de Facoemulsificação","Lentes Intraoculares","Cirurgia: Técnicas de Fratura","Cirurgia: Catarata em Casos Especiais","Complicações Perioperatórias I","Complicações Perioperatórias II","Complicações Pós-operatórias","Implantes Secundários e Fixação de LIO"]},
+  10:{date:"11/05/2026",module:"Neuroftalmologia",topics:["Anatomia das Vias Ópticas I","Anatomia das Vias Ópticas II","Alterações Congênitas do Nervo Óptico","III, IV e VI Pares Cranianos I","III, IV e VI Pares Cranianos II","Paralisia Facial"]},
+  11:{date:"18/05/2026",module:"Neuroftalmologia",topics:["Síndromes Pupilares I","Síndromes Pupilares II","Neurites Ópticas","Neuropatias Ópticas Isquêmicas"]},
+  12:{date:"25/05/2026",module:"Neuroftalmologia",topics:["Neuropatia Óptica Tóxica e Carencial","Neuropatia Óptica Hereditária","Nistagmos","Papiledema","Hipertensão Intracraniana Idiopática","Miopatias Oculares"]},
+  13:{date:"01/06/2026",module:"Glaucoma",topics:["Bases de Glaucoma: Humor Aquoso e Seio Camerular","Bases de Glaucoma: Tonometria","Nervo Óptico Glaucomatoso","Campo Visual I","Campo Visual II","Avaliação Estrutural","Relação Estrutura-Função"]},
+  14:{date:"08/06/2026",module:"Glaucoma",topics:["Glaucoma Primário de Ângulo Aberto, HO e Pressão Normal","Glaucoma Pigmentar e Pseudoexfoliativo","Glaucoma Neovascular","Glaucoma Primário de Ângulo Fechado"]},
+  15:{date:"15/06/2026",module:"Glaucoma",topics:["Síndrome ICE","Glaucoma Congênito Primário","Neurocristopatias","Glaucoma Pós-trabecular","Glaucomas Relacionados ao Cristalino e às Hemorragias","Outros Glaucomas Secundários"]},
+  16:{date:"22/06/2026",module:"Glaucoma",topics:["Tratamento Clínico do Glaucoma I","Tratamento Clínico do Glaucoma II","Tratamento Laser em Glaucoma","Procedimentos Ciclo Destrutivos","Cirurgia: Trabeculectomia I","Cirurgia: Trabeculectomia II","Implantes de Drenagem","MIGS"]},
+  17:{date:"29/06/2026",module:"Uveítes",topics:["Bases do Trato Uveal: Íris","Bases do Trato Uveal: Corpo Ciliar","Bases do Trato Uveal: Coroide","Classificação das Uveítes","Biomicroscopia – Técnicas de Iluminação","Uveítes nas Espondiloartropatias","Uveítes na AIJ","Outras Uveítes Anteriores","Uveíte Intermediária","Emergency: Trauma Fechado do Segmento Anterior"]},
+  18:{date:"06/07/2026",module:"Uveítes",topics:["Uveítes Posteriores: Toxoplasmose Adquirida","Uveítes Posteriores: Toxoplasmose Congênita","Uveítes Posteriores: Sífilis Adquirida","Uveítes Posteriores: Sífilis Congênita","Uveítes Posteriores: Tuberculose","Uveítes Posteriores: Virais","Uveítes Posteriores: Toxocaríase e DUSN"]},
+  19:{date:"13/07/2026",module:"Uveítes",topics:["Síndrome dos Pontos Brancos","VKH e Oftalmia Simpática","Uveítes Difusas: Behçet","Uveítes Difusas: Sarcoidose","Vasculites Retinianas","Farmacologia dos Corticoides e Imunossupressores"]},
+  20:{date:"20/07/2026",module:"Óptica, Refração e VSN",topics:["Conceitos Iniciais","Interação da Luz c/ Materiais: Refração","Reflexão, Filtração e Polarização","Difração e Interferência","Introdução às Lentes","Vergência, Objeto e Imagem","Espelhos Planos e Esféricos","Aberrações Ópticas"]},
+  21:{date:"27/07/2026",module:"Óptica, Refração e VSN",topics:["Óptica dos Prismas","Acuidade Visual","Acomodação","Ponto Próximo e Ponto Remoto","Esquiascopia"]},
+  22:{date:"03/08/2026",module:"Óptica, Refração e VSN",topics:["Miopia e Hipermetropia","Astigmatismo","Anisometropia","Material das Lentes e Tratamentos","Óptica dos Bifocais e Multifocais","Causas de Insatisfação com Óculos"]},
+  23:{date:"10/08/2026",module:"Óptica, Refração e VSN",topics:["Definições e Avaliação do Paciente com VSN","Magnificação","Auxílios Ópticos I","Auxílios Ópticos II","Refração na Prática: Cilindro Cruzado","Refração na Prática: Teste Verde e Vermelho","Refração na Prática: Balanço Refratométrico","Casos Clínicos em Refração"]},
+  24:{date:"17/08/2026",module:"Retina e Vítreo",topics:["Bases de Vítreo","Bases de Retina","Autofluorescência","Angiografia Fluoresceínica","Angiografia com Indocianina Verde","OCT e Angio-OCT"]},
+  25:{date:"24/08/2026",module:"Retina e Vítreo",topics:["Retinopatia Diabética","Retinopatia Hipertensiva","Oclusões Venosas","Oclusões Arteriais","Retinopatia Falciforme","Retinopatia da Prematuridade"]},
+  26:{date:"31/08/2026",module:"Retina e Vítreo",topics:["Outras Doenças Vasculares","DMRI","Anti-VEGF e Novas Drogas em DMRI","Miopia Patológica","Estrias Angioides","Paquicoroide e Polipoidal","Coriorretinopatia Serosa Central"]},
+  27:{date:"07/09/2026",module:"Retina e Vítreo",topics:["Anormalidades Periféricas da Retina","Descolamento de Retina Regmatogênico","Retinopexia Pneumática","Introflexão Escleral","Vitrectomia Posterior","Emergency: Trauma Aberto – Corpo Estranho Intraocular"]},
+  28:{date:"14/09/2026",module:"Retina e Vítreo",topics:["Eletrofisiologia","Toxicidade Retiniana por Fármacos","Doenças da Interface Vitreorretiniana","Distrofias Difusas da Retina e da Coroide","Distrofias Maculares","Emergency: Trauma Fechado do Segmento Posterior"]},
+  29:{date:"21/09/2026",module:"Oncologia Ocular",topics:["Retinoblastoma","Melanoma de Coroide","Facomatoses","Lesões Pigmentadas do Segmento Posterior"]},
+  30:{date:"28/09/2026",module:"Oncologia Ocular",topics:["Tumores Epibulbares Benignos","Tumores Epibulbares Malignos","Lesões Pigmentadas da Superfície Ocular","Metástase Intraocular","Linfoma Intraocular"]},
+  31:{date:"05/10/2026",module:"Plástica Ocular e Vias Lacrimais",topics:["Bases de Plástica Ocular","Anomalias Congênitas das Pálpebras","Doenças dos Cílios e Inflamatórias das Pálpebras","Entrópio","Ectrópio","Cirurgia: Entrópio na Prática","Cirurgia: Ectrópio na Prática","Cirurgia: Exérese de Calázio"]},
+  32:{date:"12/10/2026",module:"Plástica Ocular e Vias Lacrimais",topics:["Ptose Palpebral e Pseudoptose","Tumores Palpebrais Malignos","Tumores Palpebrais Benignos","Cirurgia: Blefaroplastia Superior","Cirurgia: Refixação Anterior","Trauma e Reconstrução Palpebral","Fios Cirúrgicos em Oftalmologia"]},
+  33:{date:"19/10/2026",module:"Plástica Ocular e Vias Lacrimais",topics:["Bases Sistema Lacrimal I: Produção da Lágrima","Bases Sistema Lacrimal II: Bioquímica da Lágrima","Olho Seco","Bases Sistema Lacrimal III: Vias de Drenagem","Propedêutica das Vias Lacrimais","Patologias das Vias Lacrimais I","Patologias das Vias Lacrimais II"]},
+  34:{date:"26/10/2026",module:"Estrabismo",topics:["Bases dos Músculos Extraoculares","Propedêutica Motora","Propedêutica Sensorial","Adaptações Sensoriais e Motoras"]},
+  35:{date:"02/11/2026",module:"Estrabismo / Embriologia",topics:["Ambliopia","Esotropia","Exotropia","Relação CA/A","Embriologia Segmento Anterior","Embriologia Segmento Posterior"]},
+  36:{date:"09/11/2026",module:"Estrabismo / Genética",topics:["Variações Alfabéticas e Desvios Verticais","Síndromes Especiais","Diagnósticos nas 9 Posições do Olhar","Noções Cirúrgicas em Estrabismo","Genética Ocular: Princípios Básicos","Genética Ocular: Padrões de Herança","Testes Genéticos","Terapia Gênica"]},
+  37:{date:"16/11/2026",module:"Cirurgia Refrativa",topics:["Conceitos Básicos","Cirurgia: RK e PRK","Cirurgia: LASIK","Cirurgia: SMILE","Cirurgia: Lente Fácica","Emergency: Baixa Visual Aguda"]},
+  38:{date:"23/11/2026",module:"Lentes de Contato",topics:["Conceitos Básicos","Cuidados e Manutenção das LC","Lentes de Contato Rígidas","Lentes de Contato no Ceratocone","Lentes Gelatinosas e para Presbiopia","Emergency: Olho Vermelho e Dor Ocular"]},
+  39:{date:"30/11/2026",module:"Farmacologia",topics:["Conceitos Básicos em Farmacologia","Conservantes e Corantes Vitais","Anestésicos Locais","Cicloplégicos e Midriáticos","Antibióticos","Antivirais","Antifúngicos","Novos Fármacos","Emergency: Diplopia Aguda"]}
+};
+
+const REVISIONS = {
+  3:[{name:"ÓRBITA 1",d:"15"}],
+  4:[{name:"ÓRBITA 2",d:"15"}],
+  5:[{name:"CÓRNEA 1",d:"15"}],
+  6:[{name:"CÓRNEA 2",d:"15"}],
+  7:[{name:"ÓRBITA 1",d:"45"},{name:"CÓRNEA 3",d:"15"}],
+  8:[{name:"ÓRBITA 2",d:"45"},{name:"CÓRNEA 4",d:"15"}],
+  9:[{name:"CÓRNEA 1",d:"45"},{name:"CONJUNTIVA 1",d:"15"}],
+  10:[{name:"CÓRNEA 2",d:"45"},{name:"CATARATA 1",d:"15"}],
+  11:[{name:"CÓRNEA 3",d:"45"},{name:"CATARATA 2",d:"15"}],
+  12:[{name:"CÓRNEA 4",d:"45"},{name:"NEURO 1",d:"15"}],
+  13:[{name:"CONJUNTIVA 1",d:"45"},{name:"NEURO 2",d:"15"}],
+  14:[{name:"ÓRBITA 1",d:"90"},{name:"CATARATA 1",d:"45"},{name:"NEURO 3",d:"15"}],
+  15:[{name:"ÓRBITA 2",d:"90"},{name:"CATARATA 2",d:"45"},{name:"GLAUCOMA 1",d:"15"}],
+  16:[{name:"CÓRNEA 1",d:"90"},{name:"NEURO 1",d:"45"},{name:"GLAUCOMA 2",d:"15"}],
+  17:[{name:"CÓRNEA 2",d:"90"},{name:"NEURO 2",d:"45"},{name:"GLAUCOMA 3",d:"15"}],
+  18:[{name:"CÓRNEA 3",d:"90"},{name:"NEURO 3",d:"45"},{name:"GLAUCOMA 4",d:"15"}],
+  19:[{name:"CÓRNEA 4",d:"90"},{name:"GLAUCOMA 1",d:"45"},{name:"ÚVEA 1",d:"15"}],
+  20:[{name:"CONJUNTIVA 1",d:"90"},{name:"GLAUCOMA 2",d:"45"},{name:"ÚVEA 2",d:"15"}],
+  21:[{name:"CATARATA 1",d:"90"},{name:"GLAUCOMA 3",d:"45"},{name:"ÚVEA 3",d:"15"}],
+  22:[{name:"CATARATA 2",d:"90"},{name:"GLAUCOMA 4",d:"45"},{name:"ÓPTICA/REFRA 1",d:"15"}],
+  23:[{name:"NEURO 1",d:"90"},{name:"ÚVEA 1",d:"45"},{name:"ÓPTICA/REFRA 2",d:"15"}],
+  24:[{name:"NEURO 2",d:"90"},{name:"ÚVEA 2",d:"45"},{name:"ÓPTICA/REFRA 3",d:"15"}],
+  25:[{name:"NEURO 3",d:"90"},{name:"ÚVEA 3",d:"45"},{name:"VSN",d:"15"}],
+  26:[{name:"ÓRBITA 1",d:"180"},{name:"GLAUCOMA 1",d:"90"},{name:"ÓPTICA/REFRA 1",d:"45"},{name:"RETINA 1",d:"15"}],
+  27:[{name:"ÓRBITA 2",d:"180"},{name:"GLAUCOMA 2",d:"90"},{name:"ÓPTICA/REFRA 2",d:"45"},{name:"RETINA 2",d:"15"}],
+  28:[{name:"CÓRNEA 1",d:"180"},{name:"GLAUCOMA 3",d:"90"},{name:"ÓPTICA/REFRA 3",d:"45"},{name:"RETINA 3",d:"15"}],
+  29:[{name:"CÓRNEA 2",d:"180"},{name:"GLAUCOMA 4",d:"90"},{name:"VSN",d:"45"},{name:"RETINA 4",d:"15"}],
+  30:[{name:"CÓRNEA 3",d:"180"},{name:"ÚVEA 1",d:"90"},{name:"RETINA 1",d:"45"},{name:"RETINA 5",d:"15"}],
+  31:[{name:"CÓRNEA 4",d:"180"},{name:"ÚVEA 2",d:"90"},{name:"RETINA 2",d:"45"},{name:"ONCO 1",d:"15"}],
+  32:[{name:"CONJUNTIVA 1",d:"180"},{name:"ÚVEA 3",d:"90"},{name:"RETINA 3",d:"45"},{name:"ONCO 2",d:"15"}],
+  33:[{name:"CATARATA 1",d:"180"},{name:"ÓPTICA/REFRA 1",d:"90"},{name:"RETINA 4",d:"45"},{name:"PLÁSTICA 1",d:"15"}],
+  34:[{name:"CATARATA 2",d:"180"},{name:"ÓPTICA/REFRA 2",d:"90"},{name:"RETINA 5",d:"45"},{name:"PLÁSTICA 2",d:"15"}],
+  35:[{name:"NEURO 1",d:"180"},{name:"ÓPTICA/REFRA 3",d:"90"},{name:"ONCO 1",d:"45"},{name:"PLÁSTICA 3",d:"15"}],
+  36:[{name:"NEURO 2",d:"180"},{name:"VSN",d:"90"},{name:"ONCO 2",d:"45"},{name:"ESTRABISMO 1",d:"15"}],
+  37:[{name:"NEURO 3",d:"180"},{name:"RETINA 1",d:"90"},{name:"PLÁSTICA 1",d:"45"},{name:"ESTRABISMO/EMBRIO 2",d:"15"}],
+  38:[{name:"GLAUCOMA 1",d:"180"},{name:"RETINA 2",d:"90"},{name:"PLÁSTICA 2",d:"45"},{name:"ESTRABISMO/GENÉTICA 3",d:"15"}],
+  39:[{name:"GLAUCOMA 2",d:"180"},{name:"RETINA 3",d:"90"},{name:"PLÁSTICA 3",d:"45"},{name:"REFRATIVA",d:"15"}],
+  40:[{name:"RETINA 4",d:"90"},{name:"ESTRABISMO 1 e 2",d:"45"},{name:"LC",d:"15"}]
+};
+
+const REV_SOURCE = {
+  "ÓRBITA 1":1,"ÓRBITA 2":2,
+  "CÓRNEA 1":3,"CÓRNEA 2":4,"CÓRNEA 3":5,"CÓRNEA 4":6,
+  "CONJUNTIVA 1":7,
+  "CATARATA 1":8,"CATARATA 2":9,
+  "NEURO 1":10,"NEURO 2":11,"NEURO 3":12,
+  "GLAUCOMA 1":13,"GLAUCOMA 2":14,"GLAUCOMA 3":15,"GLAUCOMA 4":16,
+  "ÚVEA 1":17,"ÚVEA 2":18,"ÚVEA 3":19,
+  "ÓPTICA/REFRA 1":20,"ÓPTICA/REFRA 2":21,"ÓPTICA/REFRA 3":22,
+  "VSN":23,
+  "RETINA 1":24,"RETINA 2":25,"RETINA 3":26,"RETINA 4":27,"RETINA 5":28,
+  "ONCO 1":29,"ONCO 2":30,
+  "PLÁSTICA 1":31,"PLÁSTICA 2":32,"PLÁSTICA 3":33,
+  "ESTRABISMO 1":34,"ESTRABISMO/EMBRIO 2":35,"ESTRABISMO/GENÉTICA 3":36,
+  "REFRATIVA":37,"LC":38,
+  "ESTRABISMO 1 e 2":34
+};
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+
+let currentWeek = parseInt(localStorage.getItem('oft_week') || '8');
+let history = JSON.parse(localStorage.getItem('oft_history') || '[]');
+let modalRevName = '';
+let openTopics = {};
+
+function saveState() {
+  localStorage.setItem('oft_week', currentWeek);
+  localStorage.setItem('oft_history', JSON.stringify(history));
+}
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+
+function render() {
+  const s = SCHEDULE[currentWeek];
+  const revs = REVISIONS[currentWeek] || [];
+
+  // Header
+  document.getElementById('weekDisplay').textContent = 'S' + String(currentWeek).padStart(2, '0');
+  document.getElementById('statWeek').textContent = currentWeek;
+  document.getElementById('statDate').textContent = s ? s.date : '—';
+  document.getElementById('revWeekNum').textContent = currentWeek;
+  document.getElementById('conteudoWeekNum').textContent = currentWeek;
+  document.getElementById('statRevCount').textContent = revs.length;
+
+  // Progress
+  const pct = Math.round((currentWeek / 39) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+
+  // History stats
+  const totalTrials = history.length;
+  const avgPct = totalTrials > 0
+    ? Math.round(history.reduce((a, h) => a + (h.feitas > 0 ? h.acertos / h.feitas : 0), 0) / totalTrials * 100)
+    : null;
+  document.getElementById('statTrials').textContent = totalTrials;
+  document.getElementById('statAvg').textContent = avgPct !== null ? avgPct + '%' : '—';
+
+  renderRevisoes(revs);
+  renderConteudo(s);
+  renderHistorico();
+  renderTodas();
+}
+
+function renderRevisoes(revs) {
+  const el = document.getElementById('revisoes-list');
+  if (!revs || revs.length === 0) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">&#9676;</div><p>nenhuma revisão programada para esta semana</p></div>`;
+    return;
+  }
+  el.innerHTML = revs.map((r, i) => {
+    const srcW = REV_SOURCE[r.name];
+    const srcS = SCHEDULE[srcW];
+    const topics = srcS ? srcS.topics : [];
+    const isOpen = openTopics['r' + i];
+    return `
+      <div class="revision-card interval-${r.d}">
+        <div class="rc-header">
+          <div class="rc-name">${r.name}</div>
+          <div class="rc-right">
+            <span class="interval-badge badge-${r.d}">${r.d} DIAS</span>
+            <button onclick="openModal('${r.name.replace(/'/g, "\\'")}')" style="background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:5px 10px;border-radius:6px;cursor:pointer;">+ Trilha</button>
+          </div>
+        </div>
+        <div class="rc-meta">Semana ${srcW || '?'} &nbsp;·&nbsp; <span>${srcS ? srcS.module : '—'}</span></div>
+        ${topics.length ? `
+        <button class="topics-toggle ${isOpen ? 'open' : ''}" onclick="toggleTopics('r${i}', this)">
+          <span class="arrow">&#9658;</span> ${isOpen ? 'Ocultar' : 'Ver'} tópicos
+        </button>
+        <div class="topics-grid ${isOpen ? 'visible' : ''}" id="tg-r${i}">
+          ${topics.map(t => `<span class="topic-chip">${t}</span>`).join('')}
+        </div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderConteudo(s) {
+  const el = document.getElementById('conteudo-content');
+  if (!s) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">&#9676;</div><p>semana fora do cronograma</p></div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="module-badge">&#9632; ${s.module}</div>
+    <div class="date-badge">Data: ${s.date}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      ${s.topics.map(t => `<span class="topic-chip">${t}</span>`).join('')}
+    </div>`;
+}
+
+function renderHistorico() {
+  const el = document.getElementById('historico-list');
+  if (history.length === 0) {
+    el.innerHTML = `<div class="history-empty">// nenhuma trilha registrada ainda</div>`;
+    return;
+  }
+  el.innerHTML = [...history].reverse().map((h, ri) => {
+    const i = history.length - 1 - ri;
+    const pct = h.feitas > 0 ? Math.round(h.acertos / h.feitas * 100) : 0;
+    const cls = pct >= 80 ? 'score-great' : pct >= 60 ? 'score-ok' : 'score-low';
+    return `
+      <div class="history-item">
+        <div class="hi-left">
+          <div class="hi-name">${h.revision}</div>
+          <div class="hi-meta">S${String(h.week).padStart(2,'0')} &nbsp;·&nbsp; ${h.date}</div>
+        </div>
+        <div class="hi-score ${cls}">${h.acertos}/${h.feitas} &nbsp; <strong>${pct}%</strong></div>
+        <button class="hi-del" onclick="deleteHistory(${i})" title="Remover">&#215;</button>
+      </div>`;
+  }).join('');
+}
+
+function renderTodas() {
+  const el = document.getElementById('todas-list');
+  const maxW = 40;
+  let html = '';
+  for (let w = 1; w <= maxW; w++) {
+    const revs = REVISIONS[w];
+    if (!revs || revs.length === 0) continue;
+    html += `<div class="all-week-row">
+      <div class="all-week-num">S${String(w).padStart(2,'0')}</div>
+      <div class="all-week-pills">
+        ${revs.map(r => `<span class="all-pill ${w === currentWeek ? 'current-week' : ''}">${r.name} <span style="opacity:.5;font-size:10px">${r.d}d</span></span>`).join('')}
+      </div>
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  INTERACTIONS
+// ══════════════════════════════════════════════
+
+function changeWeek(d) {
+  currentWeek = Math.max(1, Math.min(40, currentWeek + d));
+  openTopics = {};
+  saveState();
+  render();
+}
+
+function toggleTopics(key, btn) {
+  openTopics[key] = !openTopics[key];
+  const grid = document.getElementById('tg-' + key);
+  if (grid) grid.classList.toggle('visible', openTopics[key]);
+  btn.classList.toggle('open', openTopics[key]);
+  const arrow = btn.querySelector('.arrow');
+  btn.innerHTML = `<span class="arrow" style="transition:transform 0.2s;display:inline-block;transform:${openTopics[key]?'rotate(90deg)':'rotate(0deg)'}">&#9658;</span> ${openTopics[key] ? 'Ocultar' : 'Ver'} tópicos`;
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── MODAL ──
+function openModal(revName) {
+  modalRevName = revName;
+  document.getElementById('modalTitle').textContent = revName;
+  document.getElementById('modalSub').textContent = 'Semana ' + currentWeek + ' · Registrar desempenho na trilha';
+  document.getElementById('modalFeitas').value = '';
+  document.getElementById('modalAcertos').value = '';
+  document.getElementById('modalPreview').innerHTML = 'Preencha os campos acima';
+  document.getElementById('trailModal').classList.add('open');
+  setTimeout(() => document.getElementById('modalFeitas').focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById('trailModal').classList.remove('open');
+}
+
+document.getElementById('trailModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function updateModalPreview() {
+  const f = parseInt(document.getElementById('modalFeitas').value) || 0;
+  const a = parseInt(document.getElementById('modalAcertos').value) || 0;
+  const prev = document.getElementById('modalPreview');
+  if (!f) { prev.innerHTML = 'Preencha os campos acima'; return; }
+  const pct = Math.round(a / f * 100);
+  const cls = pct >= 80 ? 'result-great' : pct >= 60 ? 'result-ok' : 'result-low';
+  const emoji = pct >= 80 ? '&#10003;' : pct >= 60 ? '&#8776;' : '&#9650;';
+  prev.innerHTML = `<span class="result-pill ${cls}">${emoji} ${a} / ${f} &nbsp;·&nbsp; ${pct}%</span>`;
+}
+
+function saveTrail() {
+  const f = parseInt(document.getElementById('modalFeitas').value);
+  const a = parseInt(document.getElementById('modalAcertos').value);
+  if (!f || f <= 0) { document.getElementById('modalFeitas').focus(); return; }
+  const acertos = Math.min(isNaN(a) ? 0 : a, f);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('pt-BR');
+  history.push({ revision: modalRevName, week: currentWeek, feitas: f, acertos, date: dateStr });
+  saveState();
+  closeModal();
+  render();
+  // Auto-switch to historico tab
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-historico').classList.add('active');
+  document.querySelectorAll('.tab-btn')[2].classList.add('active');
+}
+
+function deleteHistory(i) {
+  history.splice(i, 1);
+  saveState();
+  render();
+}
+
+function clearHistory() {
+  if (confirm('Limpar todo o histórico de trilhas?')) {
+    history = [];
+    saveState();
+    render();
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowLeft' && !document.getElementById('trailModal').classList.contains('open')) changeWeek(-1);
+  if (e.key === 'ArrowRight' && !document.getElementById('trailModal').classList.contains('open')) changeWeek(1);
+});
+
+// ── INIT ──
+render();
+
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function exportPDF() {
+  if (!window.jspdf) { showToast('Carregando biblioteca PDF...'); setTimeout(exportPDF, 800); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const W = 210; const M = 18;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('pt-BR');
+  const sched = SCHEDULE[currentWeek];
+
+  function setColor(hex) { const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); doc.setTextColor(r,g,b); }
+  function setFill(hex)  { const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); doc.setFillColor(r,g,b); }
+  function setDraw(hex)  { const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); doc.setDrawColor(r,g,b); }
+
+  function pageHeader(pg1) {
+    setFill('#0f0f11'); doc.rect(0, 0, W, pg1 ? 42 : 14, 'F');
+    setFill('#c9a84c'); doc.rect(0, pg1 ? 42 : 14, W, 1.2, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(pg1 ? 22 : 9);
+    setColor('#e8c97a'); doc.text('OFT-REVIEW', M, pg1 ? 18 : 9);
+    doc.setFont('helvetica','normal'); doc.setFontSize(pg1 ? 9 : 8);
+    setColor('#888580'); doc.text('EXTENSIVE GERACAO 7  -  TITULO CBO 2026', M, pg1 ? 26 : 9);
+    if (pg1) {
+      setColor('#c9a84c'); doc.setFontSize(9);
+      doc.text('Gerado em: ' + dateStr, W-M, 18, {align:'right'});
+      doc.text('Semana ' + currentWeek + '  -  ' + (sched ? sched.date : ''), W-M, 26, {align:'right'});
+    } else {
+      setColor('#555250'); doc.setFont('helvetica','normal'); doc.setFontSize(8);
+      doc.text('Relatorio de Estudos - CBO 2026', W-M, 9, {align:'right'});
+    }
+  }
+
+  function sectionTitle(title, yp) {
+    setFill('#18181c'); doc.roundedRect(M, yp, W-M*2, 7.5, 1.5, 1.5, 'F');
+    setColor('#c9a84c'); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+    doc.text(title.toUpperCase(), M+4, yp+5); return yp+12;
+  }
+
+  function checkBreak(yp, needed) {
+    if (yp + needed > 272) { doc.addPage(); pageHeader(false); return 24; }
+    return yp;
+  }
+
+  pageHeader(true);
+  let y = 54;
+
+  // ── 1. PROGRESSO GERAL ──
+  y = sectionTitle('1. Progresso Geral no Extensivo', y);
+  const pctProgress = Math.round((currentWeek/39)*100);
+  const totalTrials = history.length;
+  const avgPct = totalTrials > 0 ? Math.round(history.reduce((a,h)=>a+(h.feitas>0?h.acertos/h.feitas:0),0)/totalTrials*100) : null;
+  const totalFeitas = history.reduce((a,h)=>a+h.feitas,0);
+  const totalAcertos = history.reduce((a,h)=>a+h.acertos,0);
+
+  const boxes = [
+    {label:'Semana Atual', value:'S'+String(currentWeek).padStart(2,'0'), sub: sched ? sched.date : ''},
+    {label:'Progresso', value:pctProgress+'%', sub:currentWeek+' de 39 semanas'},
+    {label:'Trilhas Feitas', value:String(totalTrials), sub:totalFeitas+' questoes no total'},
+    {label:'Acerto Medio', value:avgPct!==null?avgPct+'%':'N/A', sub:totalAcertos+' acertos'},
+  ];
+  const bw = (W-M*2-9)/4;
+  boxes.forEach((b,i) => {
+    const bx = M+i*(bw+3);
+    setFill('#111113'); setDraw('#2a2a2e'); doc.setLineWidth(0.3);
+    doc.roundedRect(bx, y, bw, 18, 1.5, 1.5, 'FD');
+    setColor('#555250'); doc.setFont('helvetica','normal'); doc.setFontSize(6.5);
+    doc.text(b.label.toUpperCase(), bx+bw/2, y+5, {align:'center'});
+    setColor('#e8c97a'); doc.setFont('helvetica','bold'); doc.setFontSize(14);
+    doc.text(b.value, bx+bw/2, y+12.5, {align:'center'});
+    setColor('#555250'); doc.setFont('helvetica','normal'); doc.setFontSize(6);
+    doc.text(b.sub, bx+bw/2, y+16.5, {align:'center'});
+  });
+  y += 24;
+
+  // progress bar
+  const barW = W-M*2;
+  setFill('#18181c'); doc.roundedRect(M, y, barW, 4, 2, 2, 'F');
+  if (pctProgress > 0) { setFill('#c9a84c'); doc.roundedRect(M, y, barW*(pctProgress/100), 4, 2, 2, 'F'); }
+  y += 12;
+
+  // ── 2. REVISOES POR SEMANA ──
+  y = checkBreak(y, 20);
+  y = sectionTitle('2. Revisoes Feitas por Semana', y);
+  const byWeek = {};
+  history.forEach(h => { if(!byWeek[h.week]) byWeek[h.week]=[]; byWeek[h.week].push(h); });
+
+  if (Object.keys(byWeek).length === 0) {
+    setColor('#555250'); doc.setFont('helvetica','italic'); doc.setFontSize(9);
+    doc.text('Nenhuma trilha registrada ainda.', M+4, y); y += 10;
+  } else {
+    const weekRows = Object.keys(byWeek).sort((a,b)=>a-b).map(w => {
+      const wt = byWeek[w];
+      const wf = wt.reduce((a,h)=>a+h.feitas,0);
+      const wa = wt.reduce((a,h)=>a+h.acertos,0);
+      const wp = wf>0?Math.round(wa/wf*100):0;
+      const rn = [...new Set(wt.map(h=>h.revision))].join(', ');
+      return ['S'+String(w).padStart(2,'0'), rn, String(wt.length), wa+'/'+wf, wp+'%'];
+    });
+    y = checkBreak(y, weekRows.length*8+16);
+    doc.autoTable({
+      startY: y, head:[['Semana','Revisoes','Trilhas','Acertos','%']], body: weekRows,
+      margin:{left:M,right:M},
+      styles:{font:'helvetica',fontSize:8,cellPadding:3,textColor:[240,237,232],fillColor:[17,17,19],lineColor:[42,42,46],lineWidth:0.3},
+      headStyles:{fillColor:[24,24,28],textColor:[201,168,76],fontStyle:'bold',fontSize:7.5},
+      alternateRowStyles:{fillColor:[15,15,17]},
+      columnStyles:{0:{cellWidth:18,fontStyle:'bold'},2:{cellWidth:18,halign:'center'},3:{cellWidth:22,halign:'center'},4:{cellWidth:16,halign:'center',fontStyle:'bold'}},
+      didParseCell(d){if(d.column.index===4&&d.section==='body'){const p=parseInt(d.cell.text[0]);if(p>=80)d.cell.styles.textColor=[74,156,110];else if(p>=60)d.cell.styles.textColor=[212,147,58];else if(!isNaN(p))d.cell.styles.textColor=[224,82,82];}}
+    });
+    y = doc.lastAutoTable.finalY + 8;
+  }
+
+  // ── 3. DESEMPENHO POR MODULO ──
+  y = checkBreak(y, 20);
+  y = sectionTitle('3. Desempenho por Modulo', y);
+  const byModule = {};
+  history.forEach(h => {
+    const mod = h.revision.replace(/\s+\d.*$/,'').trim();
+    if(!byModule[mod]) byModule[mod]={feitas:0,acertos:0,count:0};
+    byModule[mod].feitas+=h.feitas; byModule[mod].acertos+=h.acertos; byModule[mod].count+=1;
+  });
+
+  if (Object.keys(byModule).length === 0) {
+    setColor('#555250'); doc.setFont('helvetica','italic'); doc.setFontSize(9);
+    doc.text('Nenhum dado disponivel ainda.', M+4, y); y += 10;
+  } else {
+    const modRows = Object.entries(byModule).sort((a,b)=>b[1].feitas-a[1].feitas).map(([mod,d]) => {
+      const p = d.feitas>0?Math.round(d.acertos/d.feitas*100):0;
+      const bar = Array(Math.round(p/10)+1).join('|');
+      return [mod, String(d.count), d.acertos+'/'+d.feitas, p+'%', bar];
+    });
+    y = checkBreak(y, modRows.length*8+16);
+    doc.autoTable({
+      startY: y, head:[['Modulo','Trilhas','Acertos','%','Grafico']], body: modRows,
+      margin:{left:M,right:M},
+      styles:{font:'helvetica',fontSize:8,cellPadding:3,textColor:[240,237,232],fillColor:[17,17,19],lineColor:[42,42,46],lineWidth:0.3},
+      headStyles:{fillColor:[24,24,28],textColor:[201,168,76],fontStyle:'bold',fontSize:7.5},
+      alternateRowStyles:{fillColor:[15,15,17]},
+      columnStyles:{0:{cellWidth:50,fontStyle:'bold'},1:{cellWidth:18,halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:16,halign:'center',fontStyle:'bold'},4:{cellWidth:'auto',fontSize:7}},
+      didParseCell(d){
+        if(d.column.index===3&&d.section==='body'){const p=parseInt(d.cell.text[0]);if(p>=80)d.cell.styles.textColor=[74,156,110];else if(p>=60)d.cell.styles.textColor=[212,147,58];else if(!isNaN(p))d.cell.styles.textColor=[224,82,82];}
+        if(d.column.index===4&&d.section==='body'){const p=parseInt(modRows[d.row.index][3]);if(p>=80)d.cell.styles.textColor=[74,156,110];else if(p>=60)d.cell.styles.textColor=[212,147,58];else d.cell.styles.textColor=[224,82,82];}
+      }
+    });
+    y = doc.lastAutoTable.finalY + 8;
+  }
+
+  // ── 4. HISTORICO COMPLETO ──
+  if (history.length > 0) {
+    y = checkBreak(y, 20);
+    y = sectionTitle('4. Historico Completo de Trilhas', y);
+    const histRows = history.map(h => {
+      const p = h.feitas>0?Math.round(h.acertos/h.feitas*100):0;
+      return ['S'+String(h.week).padStart(2,'0'), h.revision, h.date, h.acertos+'/'+h.feitas, p+'%'];
+    });
+    y = checkBreak(y, Math.min(histRows.length,15)*7+16);
+    doc.autoTable({
+      startY: y, head:[['Semana','Revisao','Data','Acertos','%']], body: histRows,
+      margin:{left:M,right:M},
+      styles:{font:'helvetica',fontSize:7.5,cellPadding:2.5,textColor:[240,237,232],fillColor:[17,17,19],lineColor:[42,42,46],lineWidth:0.3},
+      headStyles:{fillColor:[24,24,28],textColor:[201,168,76],fontStyle:'bold',fontSize:7},
+      alternateRowStyles:{fillColor:[15,15,17]},
+      columnStyles:{0:{cellWidth:16,fontStyle:'bold',halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:20,halign:'center'},4:{cellWidth:14,halign:'center',fontStyle:'bold'}},
+      didParseCell(d){if(d.column.index===4&&d.section==='body'){const p=parseInt(d.cell.text[0]);if(p>=80)d.cell.styles.textColor=[74,156,110];else if(p>=60)d.cell.styles.textColor=[212,147,58];else if(!isNaN(p))d.cell.styles.textColor=[224,82,82];}}
+    });
+  }
+
+  // ── FOOTER em todas as paginas ──
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= pageCount; p++) {
+    doc.setPage(p);
+    setFill('#0f0f11'); doc.rect(0, 287, W, 10, 'F');
+    setColor('#333330'); doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    doc.text('OFT-Review  -  Relatorio gerado em ' + dateStr, M, 293);
+    doc.text('Pagina ' + p + ' de ' + pageCount, W-M, 293, {align:'right'});
+  }
+
+  const filename = 'OFT-Review_Relatorio_S' + String(currentWeek).padStart(2,'0') + '_' + dateStr.replace(/\//g,'-') + '.pdf';
+  doc.save(filename);
+  showToast('PDF exportado com sucesso!');
+}
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</body>
+</html>
