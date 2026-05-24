@@ -852,6 +852,10 @@ body::before {
         <input type="number" class="modal-input" id="modalAcertos" min="0" placeholder="0" oninput="updateModalPreview()">
       </div>
     </div>
+    <div class="modal-input-group" style="margin-bottom:16px;">
+      <label>Flashcards revisados <span style="font-weight:400;opacity:.45">(opcional)</span></label>
+      <input type="number" class="modal-input" id="modalFlashcards" min="0" placeholder="0" style="font-size:20px;" oninput="updateModalPreview()">
+    </div>
     <div class="modal-preview" id="modalPreview">
       Preencha os campos acima
     </div>
@@ -1107,13 +1111,18 @@ function renderHistorico() {
     const i = history.length - 1 - ri;
     const pct = h.feitas > 0 ? Math.round(h.acertos / h.feitas * 100) : 0;
     const cls = pct >= 80 ? 'score-great' : pct >= 60 ? 'score-ok' : 'score-low';
+    const fcBadge = h.flashcards ? `<span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);background:var(--blue-dim);border:1px solid rgba(74,130,196,0.2);padding:2px 8px;border-radius:20px;white-space:nowrap;">${h.flashcards} cards</span>` : '';
+    const scoreHtml = h.feitas > 0 ? `<div class="hi-score ${cls}">${h.acertos}/${h.feitas} &nbsp; <strong>${pct}%</strong></div>` : '';
     return `
       <div class="history-item">
         <div class="hi-left">
           <div class="hi-name">${h.revision}</div>
           <div class="hi-meta">S${String(h.week).padStart(2,'0')} &nbsp;·&nbsp; ${h.date}</div>
         </div>
-        <div class="hi-score ${cls}">${h.acertos}/${h.feitas} &nbsp; <strong>${pct}%</strong></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          ${fcBadge}
+          ${scoreHtml}
+        </div>
         <button class="hi-del" onclick="deleteHistory(${i})" title="Remover">&#215;</button>
       </div>`;
   }).join('');
@@ -1169,6 +1178,7 @@ function openModal(revName) {
   document.getElementById('modalSub').textContent = 'Semana ' + currentWeek + ' · Registrar desempenho na trilha';
   document.getElementById('modalFeitas').value = '';
   document.getElementById('modalAcertos').value = '';
+  document.getElementById('modalFlashcards').value = '';
   document.getElementById('modalPreview').innerHTML = 'Preencha os campos acima';
   document.getElementById('trailModal').classList.add('open');
   setTimeout(() => document.getElementById('modalFeitas').focus(), 100);
@@ -1185,22 +1195,32 @@ document.getElementById('trailModal').addEventListener('click', function(e) {
 function updateModalPreview() {
   const f = parseInt(document.getElementById('modalFeitas').value) || 0;
   const a = parseInt(document.getElementById('modalAcertos').value) || 0;
+  const fc = parseInt(document.getElementById('modalFlashcards').value) || 0;
   const prev = document.getElementById('modalPreview');
-  if (!f) { prev.innerHTML = 'Preencha os campos acima'; return; }
-  const pct = Math.round(a / f * 100);
-  const cls = pct >= 80 ? 'result-great' : pct >= 60 ? 'result-ok' : 'result-low';
-  const emoji = pct >= 80 ? '&#10003;' : pct >= 60 ? '&#8776;' : '&#9650;';
-  prev.innerHTML = `<span class="result-pill ${cls}">${emoji} ${a} / ${f} &nbsp;·&nbsp; ${pct}%</span>`;
+  if (!f && !fc) { prev.innerHTML = 'Preencha os campos acima'; return; }
+  let html = '';
+  if (f) {
+    const pct = Math.round(a / f * 100);
+    const cls = pct >= 80 ? 'result-great' : pct >= 60 ? 'result-ok' : 'result-low';
+    const emoji = pct >= 80 ? '&#10003;' : pct >= 60 ? '&#8776;' : '&#9650;';
+    html += `<span class="result-pill ${cls}">${emoji} ${a}/${f} &nbsp;·&nbsp; ${pct}%</span>`;
+  }
+  if (fc) {
+    html += `<span class="result-pill" style="background:var(--blue-dim);color:var(--blue);border:1px solid rgba(74,130,196,0.25);margin-left:4px;">&#9632; ${fc} cards</span>`;
+  }
+  prev.innerHTML = html;
 }
 
 function saveTrail() {
   const f = parseInt(document.getElementById('modalFeitas').value);
   const a = parseInt(document.getElementById('modalAcertos').value);
-  if (!f || f <= 0) { document.getElementById('modalFeitas').focus(); return; }
-  const acertos = Math.min(isNaN(a) ? 0 : a, f);
+  const fc = parseInt(document.getElementById('modalFlashcards').value) || 0;
+  if ((!f || f <= 0) && fc <= 0) { document.getElementById('modalFeitas').focus(); return; }
+  const feitas = isNaN(f) ? 0 : Math.max(0, f);
+  const acertos = Math.min(isNaN(a) ? 0 : a, feitas);
   const now = new Date();
   const dateStr = now.toLocaleDateString('pt-BR');
-  const entry = { revision: modalRevName, week: currentWeek, feitas: f, acertos, date: dateStr };
+  const entry = { revision: modalRevName, week: currentWeek, feitas, acertos, flashcards: fc, date: dateStr };
   history.push(entry);
   saveState();
   if (sb && currentUser) saveTrailToSupabase(entry);
@@ -1289,7 +1309,7 @@ async function loadFromSupabase() {
       if (histRes.data && histRes.data.length > 0) {
         history = histRes.data.map(h => ({
           _id: h.id, revision: h.revision, week: h.week,
-          feitas: h.feitas, acertos: h.acertos, date: h.date
+          feitas: h.feitas, acertos: h.acertos, flashcards: h.flashcards || 0, date: h.date
         }));
         localStorage.setItem('oft_history', JSON.stringify(history));
       }
@@ -1304,7 +1324,7 @@ async function uploadLocalToSupabase() {
     if (history.length > 0) {
       const rows = history.map(h => ({
         user_id: currentUser.id, revision: h.revision, week: h.week,
-        feitas: h.feitas, acertos: h.acertos, date: h.date
+        feitas: h.feitas, acertos: h.acertos, flashcards: h.flashcards || 0, date: h.date
       }));
       const { data } = await sb.from('oft_history').insert(rows).select();
       if (data) {
@@ -1321,7 +1341,7 @@ async function saveTrailToSupabase(entry) {
   try {
     const { data } = await sb.from('oft_history').insert({
       user_id: currentUser.id, revision: entry.revision, week: entry.week,
-      feitas: entry.feitas, acertos: entry.acertos, date: entry.date
+      feitas: entry.feitas, acertos: entry.acertos, flashcards: entry.flashcards || 0, date: entry.date
     }).select().single();
     if (data) entry._id = data.id;
   } catch(e) { console.warn('Supabase trail save:', e); }
@@ -1589,16 +1609,19 @@ function exportPDF() {
     y = sectionTitle('4. Historico Completo de Trilhas', y);
     const histRows = history.map(h => {
       const p = h.feitas>0?Math.round(h.acertos/h.feitas*100):0;
-      return ['S'+String(h.week).padStart(2,'0'), h.revision, h.date, h.acertos+'/'+h.feitas, p+'%'];
+      const fcStr = h.flashcards ? String(h.flashcards) : '—';
+      const scoreStr = h.feitas > 0 ? h.acertos+'/'+h.feitas : '—';
+      const pctStr = h.feitas > 0 ? p+'%' : '—';
+      return ['S'+String(h.week).padStart(2,'0'), h.revision, h.date, scoreStr, pctStr, fcStr];
     });
     y = checkBreak(y, Math.min(histRows.length,15)*7+16);
     doc.autoTable({
-      startY: y, head:[['Semana','Revisao','Data','Acertos','%']], body: histRows,
+      startY: y, head:[['Semana','Revisao','Data','Acertos','%','Cards']], body: histRows,
       margin:{left:M,right:M},
       styles:{font:'helvetica',fontSize:7.5,cellPadding:2.5,textColor:[240,237,232],fillColor:[17,17,19],lineColor:[42,42,46],lineWidth:0.3},
       headStyles:{fillColor:[24,24,28],textColor:[201,168,76],fontStyle:'bold',fontSize:7},
       alternateRowStyles:{fillColor:[15,15,17]},
-      columnStyles:{0:{cellWidth:16,fontStyle:'bold',halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:20,halign:'center'},4:{cellWidth:14,halign:'center',fontStyle:'bold'}},
+      columnStyles:{0:{cellWidth:16,fontStyle:'bold',halign:'center'},2:{cellWidth:22,halign:'center'},3:{cellWidth:20,halign:'center'},4:{cellWidth:14,halign:'center',fontStyle:'bold'},5:{cellWidth:14,halign:'center',textColor:[74,130,196]}},
       didParseCell(d){if(d.column.index===4&&d.section==='body'){const p=parseInt(d.cell.text[0]);if(p>=80)d.cell.styles.textColor=[74,156,110];else if(p>=60)d.cell.styles.textColor=[212,147,58];else if(!isNaN(p))d.cell.styles.textColor=[224,82,82];}}
     });
   }
