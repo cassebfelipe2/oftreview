@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   --bg: #0a0a0b;
@@ -588,6 +589,7 @@ body::before {
   transition: all 0.15s;
 }
 .btn-save:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.5); }
+.btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── EMPTY STATE ── */
 .empty-state {
@@ -666,6 +668,68 @@ body::before {
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
+/* ── AUTH PILL ── */
+.auth-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 7px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  transition: all 0.15s;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.auth-pill:hover { border-color: var(--border2); color: var(--text2); }
+.auth-pill.synced { color: var(--gold); border-color: rgba(201,168,76,0.25); }
+.auth-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* ── AUTH MODAL INPUTS ── */
+.auth-label {
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  display: block;
+}
+.auth-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 14px;
+  display: block;
+}
+.auth-input:focus { border-color: rgba(201,168,76,0.4); }
+.auth-msg {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 18px;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -682,6 +746,10 @@ body::before {
       <p>EXTENSIVE G7 · TÍTULO CBO 2026</p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <button class="auth-pill" id="authPill" onclick="openAuthModal()">
+        <span class="auth-dot"></span>
+        <span id="authPillText">Entrar</span>
+      </button>
       <button class="export-btn" onclick="exportPDF()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Relatório PDF
@@ -794,7 +862,38 @@ body::before {
   </div>
 </div>
 
+<!-- MODAL: AUTH -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <div class="modal-title" id="authModalTitle">Entrar</div>
+    <div class="modal-sub">Sincronize seus dados entre todos os dispositivos</div>
+    <div style="margin-top:20px;">
+      <label class="auth-label">Email</label>
+      <input type="email" class="auth-input" id="authEmail" placeholder="seu@email.com" autocomplete="email"
+             onkeydown="if(event.key==='Enter')document.getElementById('authPassword').focus()">
+      <label class="auth-label">Senha</label>
+      <input type="password" class="auth-input" id="authPassword" placeholder="mínimo 6 caracteres" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')doAuth()">
+    </div>
+    <div class="auth-msg" id="authMsg"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="authToggleBtn" onclick="toggleAuthMode()">Criar conta</button>
+      <button class="btn-save" id="authSubmitBtn" onclick="doAuth()">Entrar</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ══════════════════════════════════════════════
+//  SUPABASE CONFIG
+// ══════════════════════════════════════════════
+const SUPABASE_URL = 'https://ufsanftnzfdtsyrbfsev.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmc2FuZnRuemZkdHN5cmJmc2V2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NDUwMDUsImV4cCI6MjA5NTIyMTAwNX0.q9bMGfLRXW2q5O1RClQeLo8YZRA8qEwO4PS9sZvFSQU';
+
+let sb = null;
+let currentUser = null;
+let authMode = 'login';
+
 // ══════════════════════════════════════════════
 //  DATA
 // ══════════════════════════════════════════════
@@ -912,6 +1011,9 @@ let openTopics = {};
 function saveState() {
   localStorage.setItem('oft_week', currentWeek);
   localStorage.setItem('oft_history', JSON.stringify(history));
+  if (sb && currentUser) {
+    sb.from('oft_user_state').upsert({ user_id: currentUser.id, current_week: currentWeek }).then(() => {});
+  }
 }
 
 // ══════════════════════════════════════════════
@@ -1050,7 +1152,6 @@ function toggleTopics(key, btn) {
   const grid = document.getElementById('tg-' + key);
   if (grid) grid.classList.toggle('visible', openTopics[key]);
   btn.classList.toggle('open', openTopics[key]);
-  const arrow = btn.querySelector('.arrow');
   btn.innerHTML = `<span class="arrow" style="transition:transform 0.2s;display:inline-block;transform:${openTopics[key]?'rotate(90deg)':'rotate(0deg)'}">&#9658;</span> ${openTopics[key] ? 'Ocultar' : 'Ver'} tópicos`;
 }
 
@@ -1061,7 +1162,7 @@ function showTab(tab) {
   event.target.classList.add('active');
 }
 
-// ── MODAL ──
+// ── TRAIL MODAL ──
 function openModal(revName) {
   modalRevName = revName;
   document.getElementById('modalTitle').textContent = revName;
@@ -1099,11 +1200,12 @@ function saveTrail() {
   const acertos = Math.min(isNaN(a) ? 0 : a, f);
   const now = new Date();
   const dateStr = now.toLocaleDateString('pt-BR');
-  history.push({ revision: modalRevName, week: currentWeek, feitas: f, acertos, date: dateStr });
+  const entry = { revision: modalRevName, week: currentWeek, feitas: f, acertos, date: dateStr };
+  history.push(entry);
   saveState();
+  if (sb && currentUser) saveTrailToSupabase(entry);
   closeModal();
   render();
-  // Auto-switch to historico tab
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-historico').classList.add('active');
@@ -1111,6 +1213,10 @@ function saveTrail() {
 }
 
 function deleteHistory(i) {
+  const entry = history[i];
+  if (sb && currentUser && entry._id) {
+    sb.from('oft_history').delete().eq('id', entry._id).then(() => {});
+  }
   history.splice(i, 1);
   saveState();
   render();
@@ -1118,6 +1224,9 @@ function deleteHistory(i) {
 
 function clearHistory() {
   if (confirm('Limpar todo o histórico de trilhas?')) {
+    if (sb && currentUser) {
+      sb.from('oft_history').delete().eq('user_id', currentUser.id).then(() => {});
+    }
     history = [];
     saveState();
     render();
@@ -1125,13 +1234,202 @@ function clearHistory() {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-  if (e.key === 'ArrowLeft' && !document.getElementById('trailModal').classList.contains('open')) changeWeek(-1);
-  if (e.key === 'ArrowRight' && !document.getElementById('trailModal').classList.contains('open')) changeWeek(1);
+  if (e.key === 'Escape') { closeModal(); closeAuthModal(); }
+  const modalOpen = document.getElementById('trailModal').classList.contains('open')
+                 || document.getElementById('authModal').classList.contains('open');
+  if (e.key === 'ArrowLeft' && !modalOpen) changeWeek(-1);
+  if (e.key === 'ArrowRight' && !modalOpen) changeWeek(1);
 });
 
+// ══════════════════════════════════════════════
+//  SUPABASE FUNCTIONS
+// ══════════════════════════════════════════════
+
+async function initSupabase() {
+  try {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      await loadFromSupabase();
+    }
+    sb.auth.onAuthStateChange(async (event, session) => {
+      const wasLoggedIn = !!currentUser;
+      currentUser = session?.user || null;
+      updateAuthUI();
+      if (currentUser && !wasLoggedIn) {
+        await loadFromSupabase();
+        render();
+      } else if (!currentUser && wasLoggedIn) {
+        render();
+      }
+    });
+  } catch(e) {
+    console.warn('Supabase init:', e);
+  }
+  updateAuthUI();
+  render();
+}
+
+async function loadFromSupabase() {
+  if (!sb || !currentUser) return;
+  try {
+    const [stateRes, histRes] = await Promise.all([
+      sb.from('oft_user_state').select('*').eq('user_id', currentUser.id).maybeSingle(),
+      sb.from('oft_history').select('*').eq('user_id', currentUser.id).order('created_at')
+    ]);
+    const hasCloudData = stateRes.data || (histRes.data && histRes.data.length > 0);
+    if (!hasCloudData && history.length > 0) {
+      await uploadLocalToSupabase();
+    } else {
+      if (stateRes.data) {
+        currentWeek = stateRes.data.current_week;
+        localStorage.setItem('oft_week', currentWeek);
+      }
+      if (histRes.data && histRes.data.length > 0) {
+        history = histRes.data.map(h => ({
+          _id: h.id, revision: h.revision, week: h.week,
+          feitas: h.feitas, acertos: h.acertos, date: h.date
+        }));
+        localStorage.setItem('oft_history', JSON.stringify(history));
+      }
+    }
+    showToast('✓ Sincronizado');
+  } catch(e) { console.warn('Supabase load:', e); }
+}
+
+async function uploadLocalToSupabase() {
+  try {
+    await sb.from('oft_user_state').upsert({ user_id: currentUser.id, current_week: currentWeek });
+    if (history.length > 0) {
+      const rows = history.map(h => ({
+        user_id: currentUser.id, revision: h.revision, week: h.week,
+        feitas: h.feitas, acertos: h.acertos, date: h.date
+      }));
+      const { data } = await sb.from('oft_history').insert(rows).select();
+      if (data) {
+        data.forEach((d, i) => { if (history[i]) history[i]._id = d.id; });
+        localStorage.setItem('oft_history', JSON.stringify(history));
+      }
+    }
+    showToast('✓ Dados enviados para nuvem');
+  } catch(e) { console.warn('Upload local:', e); }
+}
+
+async function saveTrailToSupabase(entry) {
+  if (!sb || !currentUser) return;
+  try {
+    const { data } = await sb.from('oft_history').insert({
+      user_id: currentUser.id, revision: entry.revision, week: entry.week,
+      feitas: entry.feitas, acertos: entry.acertos, date: entry.date
+    }).select().single();
+    if (data) entry._id = data.id;
+  } catch(e) { console.warn('Supabase trail save:', e); }
+}
+
+// ── AUTH UI ──
+
+function updateAuthUI() {
+  const pill = document.getElementById('authPill');
+  const text = document.getElementById('authPillText');
+  if (!pill || !text) return;
+  if (currentUser) {
+    text.textContent = currentUser.email.split('@')[0];
+    pill.classList.add('synced');
+    pill.onclick = doSignOut;
+    pill.title = 'Clique para sair';
+  } else {
+    text.textContent = 'Entrar';
+    pill.classList.remove('synced');
+    pill.onclick = openAuthModal;
+    pill.title = 'Entrar para sincronizar entre dispositivos';
+  }
+}
+
+function openAuthModal() {
+  authMode = 'login';
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authMsg').textContent = '';
+  document.getElementById('authMsg').style.color = '';
+  document.getElementById('authModalTitle').textContent = 'Entrar';
+  document.getElementById('authSubmitBtn').textContent = 'Entrar';
+  document.getElementById('authToggleBtn').textContent = 'Criar conta';
+  document.getElementById('authModal').classList.add('open');
+  setTimeout(() => document.getElementById('authEmail').focus(), 100);
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal').classList.remove('open');
+}
+
+document.getElementById('authModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAuthModal();
+});
+
+function toggleAuthMode() {
+  authMode = authMode === 'login' ? 'signup' : 'login';
+  document.getElementById('authMsg').textContent = '';
+  document.getElementById('authMsg').style.color = '';
+  if (authMode === 'signup') {
+    document.getElementById('authModalTitle').textContent = 'Criar conta';
+    document.getElementById('authSubmitBtn').textContent = 'Criar conta';
+    document.getElementById('authToggleBtn').textContent = 'Já tenho conta';
+  } else {
+    document.getElementById('authModalTitle').textContent = 'Entrar';
+    document.getElementById('authSubmitBtn').textContent = 'Entrar';
+    document.getElementById('authToggleBtn').textContent = 'Criar conta';
+  }
+}
+
+async function doAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const msg = document.getElementById('authMsg');
+  const btn = document.getElementById('authSubmitBtn');
+  if (!email || !password) { msg.textContent = 'Preencha email e senha.'; msg.style.color = 'var(--red)'; return; }
+  if (password.length < 6) { msg.textContent = 'Senha: mínimo 6 caracteres.'; msg.style.color = 'var(--red)'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Aguarde...';
+  try {
+    if (authMode === 'signup') {
+      const { error } = await sb.auth.signUp({ email, password });
+      if (error) throw error;
+      msg.textContent = 'Conta criada! Entre com email e senha agora.';
+      msg.style.color = 'var(--green)';
+      authMode = 'login';
+      document.getElementById('authModalTitle').textContent = 'Entrar';
+      document.getElementById('authSubmitBtn').textContent = 'Entrar';
+      document.getElementById('authToggleBtn').textContent = 'Criar conta';
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      closeAuthModal();
+    }
+  } catch(e) {
+    const m = {
+      'Invalid login credentials': 'Email ou senha incorretos.',
+      'Email not confirmed': 'Confirme seu email antes de entrar.',
+      'User already registered': 'Email já cadastrado. Faça login.',
+    };
+    msg.textContent = m[e.message] || e.message;
+    msg.style.color = 'var(--red)';
+  } finally {
+    btn.disabled = false;
+    if (authMode === 'login') btn.textContent = 'Entrar';
+  }
+}
+
+async function doSignOut() {
+  if (!sb) return;
+  await sb.auth.signOut();
+  currentUser = null;
+  updateAuthUI();
+  showToast('Sessão encerrada');
+}
+
 // ── INIT ──
-render();
+initSupabase();
 
 
 function showToast(msg) {
