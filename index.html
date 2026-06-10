@@ -794,6 +794,163 @@ body::before {
 .ada-name { font-size:13px; font-weight:700; color:var(--text); }
 .ada-meta { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; margin-top:2px; }
 .ada-next { font-family:'JetBrains Mono',monospace; font-size:12px; color:#9b59b6; font-weight:500; white-space:nowrap; }
+/* ── GEAR BUTTON ── */
+.gear-btn {
+  background:var(--bg2); border:1px solid var(--border); color:var(--text3);
+  border-radius:var(--radius); width:36px; height:36px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:17px;
+  transition:all 0.15s; flex-shrink:0;
+}
+.gear-btn:hover { border-color:var(--border2); color:var(--text); }
+/* ── SETTINGS MODAL ── */
+.settings-modal { max-width:540px; max-height:90vh; overflow-y:auto; }
+.settings-section { margin-bottom:22px; }
+.settings-sec-title {
+  font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--gold);
+  text-transform:uppercase; letter-spacing:.07em; margin-bottom:12px;
+  padding-bottom:6px; border-bottom:1px solid var(--border);
+}
+.settings-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+.settings-field { flex:1; min-width:120px; }
+.settings-field label { display:block; font-size:11px; color:var(--text2); margin-bottom:5px; font-family:'JetBrains Mono',monospace; }
+.settings-field input { width:100%; background:var(--bg3); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:9px 11px; font-size:14px; font-family:'JetBrains Mono',monospace; }
+.settings-field input:focus { outline:none; border-color:var(--border2); }
+/* ── DAY SUGGESTION CARD ── */
+.day-card {
+  border-radius:var(--radius); padding:14px 16px; margin-bottom:20px;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  border:1px solid;
+}
+.day-card.green  { background:var(--green-dim); border-color:rgba(74,156,110,0.3); }
+.day-card.amber  { background:var(--amber-dim); border-color:rgba(212,147,58,0.3); }
+.day-card.red    { background:var(--red-dim); border-color:rgba(224,82,82,0.3); }
+.day-card.neutral{ background:var(--bg2); border-color:var(--border); }
+.day-card-left .day-badge {
+  display:inline-block; font-size:9px; font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--text3); margin-bottom:7px;
+}
+.day-card-lines { display:flex; flex-direction:column; gap:4px; }
+.day-card-line { font-size:13px; color:var(--text); }
+.day-card-line strong { font-weight:700; }
+.day-card-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.day-reg-btn {
+  background:var(--bg3); border:1px solid var(--border2); color:var(--text2);
+  border-radius:6px; padding:7px 14px; font-size:11px; font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase; letter-spacing:.04em; cursor:pointer; transition:all 0.15s;
+}
+.day-reg-btn:hover { color:var(--text); border-color:var(--border2); }
+/* ── DAY MODAL ── */
+.day-type-row { display:flex; gap:8px; margin-bottom:16px; }
+.day-type-btn {
+  flex:1; padding:10px 4px; border-radius:8px; border:1px solid var(--border);
+  background:var(--bg3); color:var(--text2); font-family:'Syne',sans-serif;
+  font-size:12px; font-weight:700; cursor:pointer; text-transform:uppercase;
+  letter-spacing:.04em; transition:all 0.15s;
+}
+.day-type-btn:hover { border-color:var(--border2); color:var(--text); }
+.day-type-btn.sel-cheio  { background:var(--green-dim); border-color:var(--green); color:var(--green); }
+.day-type-btn.sel-medio  { background:var(--amber-dim); border-color:var(--amber); color:var(--amber); }
+.day-type-btn.sel-fraco  { background:var(--red-dim);   border-color:var(--red);   color:var(--red);   }
+.flash-toggle {
+  display:flex; align-items:center; gap:10px; padding:10px 12px; margin-bottom:16px;
+  background:var(--bg3); border:1px solid var(--border); border-radius:8px;
+  cursor:pointer; transition:all 0.15s;
+}
+.flash-toggle.on { background:var(--blue-dim); border-color:rgba(74,130,196,0.3); }
+.flash-toggle-dot {
+  width:18px; height:18px; border-radius:50%; border:1.5px solid var(--border2);
+  background:var(--bg); display:flex; align-items:center; justify-content:center;
+  font-size:10px; flex-shrink:0; transition:all 0.15s;
+}
+.flash-toggle.on .flash-toggle-dot { background:var(--blue); border-color:var(--blue); }
+/* ── DIET TAB ── */
+.diet-day-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; padding:12px 14px; background:var(--bg2);
+  border:1px solid var(--border); border-radius:var(--radius);
+}
+.diet-type-badge {
+  font-size:10px; font-family:'JetBrains Mono',monospace; text-transform:uppercase;
+  letter-spacing:.06em; padding:3px 8px; border-radius:4px;
+}
+.diet-type-badge.treino  { background:var(--green-dim); color:var(--green); border:1px solid rgba(74,156,110,.3); }
+.diet-type-badge.descanso{ background:var(--blue-dim); color:var(--blue); border:1px solid rgba(74,130,196,.3); }
+.diet-macro-bar { margin-bottom:20px; }
+.diet-macro-row { display:flex; gap:8px; margin-bottom:8px; }
+.diet-macro-col {
+  flex:1; padding:10px; background:var(--bg2); border:1px solid var(--border);
+  border-radius:8px; text-align:center;
+}
+.diet-macro-col .dm-label { font-size:9px; font-family:'JetBrains Mono',monospace; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+.diet-macro-col .dm-val   { font-size:15px; font-weight:700; color:var(--text); font-family:'JetBrains Mono',monospace; }
+.diet-macro-col .dm-pct   { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; }
+.dm-bar-track { height:4px; background:var(--bg3); border-radius:2px; overflow:hidden; margin-top:6px; }
+.dm-bar-fill  { height:4px; border-radius:2px; transition:width 0.3s; }
+.diet-meal {
+  display:flex; align-items:center; gap:12px; padding:12px 14px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--radius); margin-bottom:8px; flex-wrap:wrap;
+}
+.diet-meal.done { border-left:3px solid var(--green); }
+.diet-meal.pending { border-left:3px solid var(--border); }
+.diet-meal-name { font-size:13px; font-weight:700; color:var(--text); flex:1; min-width:80px; }
+.diet-meal-macros { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; }
+.diet-meal-btn {
+  background:var(--bg3); border:1px solid var(--border); color:var(--text2);
+  border-radius:6px; padding:5px 11px; font-size:11px; font-family:'JetBrains Mono',monospace;
+  cursor:pointer; transition:all 0.15s; flex-shrink:0;
+}
+.diet-meal.done .diet-meal-btn { color:var(--green); border-color:rgba(74,156,110,.3); background:var(--green-dim); }
+.diet-alert { padding:10px 14px; background:var(--amber-dim); border:1px solid rgba(212,147,58,.3); border-radius:var(--radius); font-size:12px; color:var(--amber); font-family:'JetBrains Mono',monospace; margin-bottom:14px; }
+/* ── GYM TAB ── */
+.gym-workout-selector {
+  display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;
+}
+.gym-train-btn {
+  flex:1; min-width:60px; padding:12px 8px; border-radius:8px;
+  border:1px solid var(--border); background:var(--bg2);
+  color:var(--text2); font-family:'Syne',sans-serif; font-size:13px;
+  font-weight:700; cursor:pointer; text-align:center; transition:all 0.15s;
+}
+.gym-train-btn:hover { border-color:var(--border2); color:var(--text); }
+.gym-train-btn.active { background:var(--gold-dim); border-color:rgba(201,168,76,.4); color:var(--gold); }
+.gym-train-btn .train-label { font-size:9px; color:var(--text3); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+.gym-exercise {
+  padding:14px; background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--radius); margin-bottom:10px;
+}
+.gym-exercise-name { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.gym-exercise-meta { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; margin-bottom:10px; }
+.gym-sets { display:flex; flex-direction:column; gap:6px; }
+.gym-set-row { display:flex; gap:8px; align-items:center; }
+.gym-set-label { font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--text3); width:36px; }
+.gym-set-input {
+  width:68px; background:var(--bg3); border:1px solid var(--border);
+  color:var(--text); border-radius:6px; padding:6px 8px;
+  font-size:13px; font-family:'JetBrains Mono',monospace; text-align:center;
+}
+.gym-set-input:focus { outline:none; border-color:var(--border2); }
+.gym-set-unit { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; }
+.gym-checkin-row { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.gym-checkin-btn {
+  flex:1; min-width:70px; padding:10px 6px; border-radius:8px;
+  border:1px solid var(--border); background:var(--bg3);
+  color:var(--text2); font-family:'Syne',sans-serif; font-size:12px;
+  font-weight:700; cursor:pointer; text-transform:uppercase;
+  letter-spacing:.04em; transition:all 0.15s;
+}
+.gym-checkin-btn:hover { border-color:var(--border2); color:var(--text); }
+.gym-checkin-btn.sel { background:var(--gold-dim); border-color:rgba(201,168,76,.4); color:var(--gold); }
+.gym-hist-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 14px; background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--radius); margin-bottom:6px;
+}
+.gym-hist-name { font-size:12px; font-weight:600; color:var(--text); }
+.gym-hist-meta { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; margin-top:2px; }
+.gym-hist-peso { font-size:13px; font-family:'JetBrains Mono',monospace; color:var(--gold); font-weight:600; }
+.gym-sugg { padding:10px 14px; background:var(--gold-dim); border:1px solid rgba(201,168,76,.25); border-radius:8px; font-size:12px; color:var(--gold2); font-family:'JetBrains Mono',monospace; margin-bottom:10px; }
+.gym-section-title { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin:16px 0 8px; }
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -814,6 +971,7 @@ body::before {
         <span class="auth-dot"></span>
         <span id="authPillText">Entrar</span>
       </button>
+      <button class="gear-btn" onclick="openSettings()" title="Configurações">⚙</button>
       <button class="export-btn" onclick="exportPDF()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Relatório PDF
@@ -869,10 +1027,13 @@ body::before {
     <button class="tab-btn" onclick="showTab('todas',this)">Todas</button>
     <button class="tab-btn" onclick="showTab('calendario',this)">Calendário</button>
     <button class="tab-btn" onclick="showTab('adaptativo',this)">Adaptativo</button>
+    <button class="tab-btn" onclick="showTab('dieta',this)">Dieta</button>
+    <button class="tab-btn" onclick="showTab('academia',this)">Academia</button>
   </div>
 
   <!-- TAB: REVISÕES -->
   <div class="tab-panel active" id="panel-revisoes">
+    <div id="daily-suggestion-card"></div>
     <div class="section-title">Revisões programadas — semana <span id="revWeekNum">8</span></div>
     <div id="revisoes-list"></div>
   </div>
@@ -922,6 +1083,16 @@ body::before {
     <div id="adaptativo-list"></div>
   </div>
 
+  <!-- TAB: DIETA -->
+  <div class="tab-panel" id="panel-dieta">
+    <div id="dieta-content"></div>
+  </div>
+
+  <!-- TAB: ACADEMIA -->
+  <div class="tab-panel" id="panel-academia">
+    <div id="academia-content"></div>
+  </div>
+
 </div>
 
 <!-- TOAST -->
@@ -952,6 +1123,113 @@ body::before {
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
       <button class="btn-save" onclick="saveTrail()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURAÇÕES -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal settings-modal">
+    <div class="modal-title">Configurações</div>
+    <div class="settings-section">
+      <div class="settings-sec-title">Estudo — Metas semanais</div>
+      <div class="settings-row">
+        <div class="settings-field"><label>Meta de questões/semana</label><input type="number" id="cfgMetaQ" min="50" max="400" value="150"></div>
+        <div class="settings-field"><label>Meta dias flashcard/semana</label><input type="number" id="cfgMetaFC" min="1" max="7" value="5"></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-field"><label>Questões — Dia Cheio</label><input type="number" id="cfgCheio" min="10" max="80" value="40"></div>
+        <div class="settings-field"><label>Questões — Dia Médio</label><input type="number" id="cfgMedio" min="5" max="50" value="25"></div>
+        <div class="settings-field"><label>Questões — Dia Fraco</label><input type="number" disabled value="0" style="opacity:.4;cursor:not-allowed;"></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-sec-title">Perfil</div>
+      <div class="settings-row">
+        <div class="settings-field"><label>Seu nome (PDF)</label><input type="text" id="cfgNome" placeholder="Felipe Casseb"></div>
+        <div class="settings-field"><label>Nome do mentor (PDF)</label><input type="text" id="cfgMentor" placeholder="Prof. Dr. ..."></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-sec-title">Dieta — Targets diários</div>
+      <div class="settings-row">
+        <div class="settings-field"><label>Kcal dia treino</label><input type="number" id="cfgCalT" min="1500" max="5000" value="2735"></div>
+        <div class="settings-field"><label>Kcal dia descanso</label><input type="number" id="cfgCalD" min="1200" max="4000" value="2335"></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-field"><label>Proteína (g) — ambos dias</label><input type="number" id="cfgProt" min="50" max="300" value="145"></div>
+        <div class="settings-field"><label>Gordura (g) — ambos dias</label><input type="number" id="cfgGord" min="30" max="200" value="71"></div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-field"><label>Carbo dia treino (g)</label><input type="number" id="cfgCarbT" min="50" max="600" value="379"></div>
+        <div class="settings-field"><label>Carbo dia descanso (g)</label><input type="number" id="cfgCarbD" min="50" max="500" value="279"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSettings()">Cancelar</button>
+      <button class="btn-save" onclick="saveSettings()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: REGISTRAR DIA -->
+<div class="modal-overlay" id="dayModal">
+  <div class="modal">
+    <div class="modal-title">Registrar dia de hoje</div>
+    <div class="modal-sub" id="dayModalSub">Como foi seu dia de hoje?</div>
+    <div style="margin-top:16px;">
+      <div style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Tipo de dia</div>
+      <div class="day-type-row">
+        <button class="day-type-btn" id="dtCheio" onclick="selectDayType('cheio')">Cheio<br><span style="font-size:10px;font-weight:400;opacity:.6;">~40 questões</span></button>
+        <button class="day-type-btn" id="dtMedio" onclick="selectDayType('medio')">Médio<br><span style="font-size:10px;font-weight:400;opacity:.6;">~25 questões</span></button>
+        <button class="day-type-btn" id="dtFraco" onclick="selectDayType('fraco')">Fraco<br><span style="font-size:10px;font-weight:400;opacity:.6;">só flashcard</span></button>
+      </div>
+      <div class="modal-input-group" style="margin-top:14px;">
+        <label>Questões feitas hoje</label>
+        <input type="number" class="modal-input" id="dayQuestoes" min="0" placeholder="0">
+      </div>
+      <div class="flash-toggle" id="dayFlashToggle" onclick="toggleFlashToday()">
+        <div class="flash-toggle-dot" id="dayFlashDot">✓</div>
+        <span style="font-size:12px;color:var(--text2);" id="dayFlashLabel">Fiz flashcard hoje</span>
+      </div>
+      <div id="dayAulaRow" style="margin-bottom:14px;">
+        <div class="flash-toggle" id="dayAulaToggle" onclick="toggleAulaToday()">
+          <div class="flash-toggle-dot" id="dayAulaDot"></div>
+          <span style="font-size:12px;color:var(--text2);" id="dayAulaLabel">Assistiu aula desta semana</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeDayModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveDayEntry()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: GYM CHECKIN -->
+<div class="modal-overlay" id="gymCheckinModal">
+  <div class="modal">
+    <div class="modal-title">Checkin de treino</div>
+    <div class="modal-sub">Selecione o treino e como você está hoje</div>
+    <div style="margin-top:16px;">
+      <div class="gym-section-title">Treino do dia</div>
+      <div class="gym-workout-selector" style="margin-bottom:16px;">
+        <button class="gym-train-btn" id="gcA" onclick="selectGymTrain('A')">A<div class="train-label">Costas+Bíc</div></button>
+        <button class="gym-train-btn" id="gcB" onclick="selectGymTrain('B')">B<div class="train-label">Peito+Tríc</div></button>
+        <button class="gym-train-btn" id="gcC" onclick="selectGymTrain('C')">C<div class="train-label">Pernas</div></button>
+        <button class="gym-train-btn" id="gcD" onclick="selectGymTrain('D')">D<div class="train-label">Ombro+Abd</div></button>
+      </div>
+      <div class="gym-section-title">Como você está?</div>
+      <div class="gym-checkin-row">
+        <button class="gym-checkin-btn" id="gcOtimo"  onclick="selectGymState('otimo')">Ótimo</button>
+        <button class="gym-checkin-btn" id="gcBom"    onclick="selectGymState('bom')">Bom</button>
+        <button class="gym-checkin-btn" id="gcCansado" onclick="selectGymState('cansado')">Cansado</button>
+        <button class="gym-checkin-btn" id="gcExausto" onclick="selectGymState('exausto')">Exausto</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeGymCheckin()">Cancelar</button>
+      <button class="btn-save" onclick="startGymSession()">Iniciar treino</button>
     </div>
   </div>
 </div>
@@ -1105,10 +1383,45 @@ let openTopics = {};
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 
+// ── Settings ──
+const SETTINGS_DEFAULT = {
+  capacidadeCheio:40, capacidadeMedio:25,
+  metaQuestoesSemanal:150, metaFlashcardDias:5,
+  nomeResidente:'', nomeMentor:'',
+  dieta:{
+    metaCal_treino:2735, metaCal_descanso:2335,
+    metaProt:145, metaGord:71,
+    metaCarb_treino:379, metaCarb_descanso:279
+  }
+};
+let settings = Object.assign({}, SETTINGS_DEFAULT, JSON.parse(localStorage.getItem('oft_settings') || '{}'));
+if (!settings.dieta) settings.dieta = SETTINGS_DEFAULT.dieta;
+
+// ── Weekly log ──
+let weeklyLog = JSON.parse(localStorage.getItem('oft_weekly_log') || '{}');
+let dayFlashOn = true;
+let dayAulaOn = false;
+let selectedDayType = null;
+
+// ── Diet log ──
+let dietLog = JSON.parse(localStorage.getItem('oft_diet_log') || '{}');
+
+// ── Gym log ──
+let gymLog = JSON.parse(localStorage.getItem('oft_gym_log') || '{"config":{},"sessions":[]}');
+if (!gymLog.config) gymLog.config = {};
+if (!gymLog.sessions) gymLog.sessions = [];
+let gymSelectedTrain = null;
+let gymSelectedState = null;
+let activeGymSession = null;
+
 function saveState() {
   localStorage.setItem('oft_week', currentWeek);
   localStorage.setItem('oft_history', JSON.stringify(history));
   localStorage.setItem('oft_adaptive', JSON.stringify(adaptiveList));
+  localStorage.setItem('oft_settings', JSON.stringify(settings));
+  localStorage.setItem('oft_weekly_log', JSON.stringify(weeklyLog));
+  localStorage.setItem('oft_diet_log', JSON.stringify(dietLog));
+  localStorage.setItem('oft_gym_log', JSON.stringify(gymLog));
   if (sb && currentUser) {
     sb.from('oft_user_state').upsert({ user_id: currentUser.id, current_week: currentWeek }).then(() => {});
   }
@@ -1147,6 +1460,7 @@ function render() {
   renderConteudo(s);
   renderHistorico();
   renderTodas();
+  renderDailySuggestion();
 }
 
 function renderRevisoes(revs) {
@@ -1268,6 +1582,8 @@ function showTab(tab, btn) {
   }
   if (tab === 'calendario') renderCalendar();
   if (tab === 'adaptativo') renderAdaptativo();
+  if (tab === 'dieta') renderDieta();
+  if (tab === 'academia') renderAcademia();
 }
 
 // ── TRAIL MODAL ──
@@ -1354,12 +1670,629 @@ function clearHistory() {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeAuthModal(); }
+  if (e.key === 'Escape') { closeModal(); closeAuthModal(); closeSettings(); closeDayModal(); closeGymCheckin(); }
   const modalOpen = document.getElementById('trailModal').classList.contains('open')
-                 || document.getElementById('authModal').classList.contains('open');
+                 || document.getElementById('authModal').classList.contains('open')
+                 || document.getElementById('settingsModal').classList.contains('open')
+                 || document.getElementById('dayModal').classList.contains('open')
+                 || document.getElementById('gymCheckinModal').classList.contains('open');
   if (e.key === 'ArrowLeft' && !modalOpen) changeWeek(-1);
   if (e.key === 'ArrowRight' && !modalOpen) changeWeek(1);
 });
+
+// ══════════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════════
+
+function openSettings() {
+  const s = settings;
+  document.getElementById('cfgMetaQ').value   = s.metaQuestoesSemanal;
+  document.getElementById('cfgMetaFC').value  = s.metaFlashcardDias;
+  document.getElementById('cfgCheio').value   = s.capacidadeCheio;
+  document.getElementById('cfgMedio').value   = s.capacidadeMedio;
+  document.getElementById('cfgNome').value    = s.nomeResidente || '';
+  document.getElementById('cfgMentor').value  = s.nomeMentor || '';
+  document.getElementById('cfgCalT').value    = s.dieta.metaCal_treino;
+  document.getElementById('cfgCalD').value    = s.dieta.metaCal_descanso;
+  document.getElementById('cfgProt').value    = s.dieta.metaProt;
+  document.getElementById('cfgGord').value    = s.dieta.metaGord;
+  document.getElementById('cfgCarbT').value   = s.dieta.metaCarb_treino;
+  document.getElementById('cfgCarbD').value   = s.dieta.metaCarb_descanso;
+  document.getElementById('settingsModal').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settingsModal').classList.remove('open');
+}
+
+document.getElementById('settingsModal').addEventListener('click', function(e) {
+  if (e.target === this) closeSettings();
+});
+
+function saveSettings() {
+  settings.metaQuestoesSemanal = parseInt(document.getElementById('cfgMetaQ').value) || 150;
+  settings.metaFlashcardDias   = parseInt(document.getElementById('cfgMetaFC').value) || 5;
+  settings.capacidadeCheio     = parseInt(document.getElementById('cfgCheio').value) || 40;
+  settings.capacidadeMedio     = parseInt(document.getElementById('cfgMedio').value) || 25;
+  settings.nomeResidente       = document.getElementById('cfgNome').value.trim();
+  settings.nomeMentor          = document.getElementById('cfgMentor').value.trim();
+  settings.dieta.metaCal_treino    = parseInt(document.getElementById('cfgCalT').value) || 2735;
+  settings.dieta.metaCal_descanso  = parseInt(document.getElementById('cfgCalD').value) || 2335;
+  settings.dieta.metaProt          = parseInt(document.getElementById('cfgProt').value) || 145;
+  settings.dieta.metaGord          = parseInt(document.getElementById('cfgGord').value) || 71;
+  settings.dieta.metaCarb_treino   = parseInt(document.getElementById('cfgCarbT').value) || 379;
+  settings.dieta.metaCarb_descanso = parseInt(document.getElementById('cfgCarbD').value) || 279;
+  saveState();
+  closeSettings();
+  renderDailySuggestion();
+  showToast('Configurações salvas');
+}
+
+// ══════════════════════════════════════════════
+//  WEEKLY LOG — META DINÂMICA
+// ══════════════════════════════════════════════
+
+function getISOWeekKey(d) {
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  return `${date.getUTCFullYear()}-${String(week).padStart(2,'0')}`;
+}
+
+function getTodayISO() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+}
+
+function getThisWeekKey() { return getISOWeekKey(new Date()); }
+
+function getThisWeekLog() {
+  const key = getThisWeekKey();
+  if (!weeklyLog[key]) {
+    weeklyLog[key] = { meta: settings.metaQuestoesSemanal, days: {}, aulaFeita: false };
+  }
+  return weeklyLog[key];
+}
+
+function calcTodaySuggestion() {
+  const wk = getThisWeekLog();
+  const todayISO = getTodayISO();
+  const todayDay = wk.days[todayISO];
+
+  // Total feito na semana (excluindo hoje se já registrado)
+  let totalFeito = 0;
+  Object.entries(wk.days).forEach(([k, v]) => {
+    totalFeito += (v.questoes || 0);
+  });
+
+  const meta = wk.meta || settings.metaQuestoesSemanal;
+  const saldo = Math.max(0, meta - totalFeito);
+
+  // Dias restantes sem registro (inclui hoje se não registrado)
+  const now = new Date();
+  // Segunda a domingo da semana ISO
+  const weekStart = new Date(now);
+  const dow = now.getDay() || 7;
+  weekStart.setDate(now.getDate() - (dow - 1));
+
+  let diasRestantes = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(weekStart);
+    d.setDate(weekStart.getDate() + i);
+    const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (!wk.days[iso] && iso >= todayISO) diasRestantes.push(iso);
+  }
+
+  // Flashcard
+  const diasFC = Object.values(wk.days).filter(v => v.flashcard).length;
+  const fcNeeded = Math.max(0, settings.metaFlashcardDias - diasFC);
+
+  // Aula
+  const aulaNeeded = !wk.aulaFeita;
+
+  if (todayDay) {
+    // Dia já registrado
+    const status = saldo === 0 ? 'done' : diasRestantes.length === 0 && saldo > 0 ? 'red' : 'green';
+    return { registered: true, type: todayDay.type, questoes: todayDay.questoes, flashcard: todayDay.flashcard, fcNeeded, aulaNeeded, saldo, meta, status, diasRestantes: diasRestantes.length };
+  }
+
+  // Cálculo de sugestão para hoje
+  let capHoje = settings.capacidadeCheio; // estimativa padrão se não selecionado
+  const totalCap = diasRestantes.length * ((settings.capacidadeCheio + settings.capacidadeMedio) / 2);
+  const questoesHoje = totalCap > 0 ? Math.round(saldo * (capHoje / totalCap)) : saldo;
+
+  let status = 'neutral';
+  if (saldo === 0) status = 'done';
+  else if (questoesHoje > settings.capacidadeCheio) status = 'red';
+  else if (questoesHoje <= settings.capacidadeMedio) status = 'green';
+  else status = 'amber';
+
+  return { registered: false, questoesHoje: Math.max(0, questoesHoje), fcNeeded, aulaNeeded, saldo, meta, status, diasRestantes: diasRestantes.length };
+}
+
+function renderDailySuggestion() {
+  const el = document.getElementById('daily-suggestion-card');
+  if (!el) return;
+  const s = calcTodaySuggestion();
+  const todayISO = getTodayISO();
+  const wk = getThisWeekLog();
+  const todayDay = wk.days[todayISO];
+  const dayLabel = todayDay ? ({cheio:'Dia Cheio',medio:'Dia Médio',fraco:'Dia Fraco'}[todayDay.type] || todayDay.type) : 'Dia não registrado';
+
+  let cardClass = s.status === 'done' ? 'green' : s.status === 'red' ? 'red' : s.status === 'amber' ? 'amber' : 'neutral';
+  let lines = '';
+
+  if (s.status === 'done') {
+    lines = `<div class="day-card-line">✓ <strong>Meta da semana batida!</strong></div>`;
+  } else if (s.registered) {
+    lines = `<div class="day-card-line">Questões hoje: <strong>${s.questoes}</strong> · Saldo semana: <strong>${s.saldo}</strong></div>`;
+  } else {
+    lines = `<div class="day-card-line">Questões sugeridas hoje: <strong>${s.questoesHoje}</strong> · Saldo: <strong>${s.saldo}/${s.meta}</strong></div>`;
+    if (s.questoesHoje > settings.capacidadeCheio) {
+      lines += `<div class="day-card-line" style="color:var(--amber);font-size:12px;">⚠ Meta em risco — tente fazer ${s.questoesHoje} para compensar</div>`;
+    }
+  }
+
+  const fcIcon = s.fcNeeded > 0 ? `⚠ ${s.fcNeeded} dia${s.fcNeeded>1?'s':''} de flashcard faltando` : '✓ Flashcard OK';
+  const fcColor = s.fcNeeded > 0 ? 'var(--amber)' : 'var(--green)';
+  lines += `<div class="day-card-line" style="color:${fcColor};font-size:12px;">${fcIcon}</div>`;
+  if (s.aulaNeeded) lines += `<div class="day-card-line" style="color:var(--text3);font-size:12px;">Aula: pendente esta semana</div>`;
+
+  el.innerHTML = `<div class="day-card ${cardClass}">
+    <div class="day-card-left">
+      <div class="day-badge">HOJE · ${dayLabel}</div>
+      <div class="day-card-lines">${lines}</div>
+    </div>
+    <div class="day-card-actions">
+      <button class="day-reg-btn" onclick="openDayModal()">${s.registered ? 'Editar dia' : 'Registrar dia'}</button>
+    </div>
+  </div>`;
+}
+
+function openDayModal() {
+  selectedDayType = null;
+  dayFlashOn = true;
+  dayAulaOn = false;
+
+  const todayISO = getTodayISO();
+  const wk = getThisWeekLog();
+  const existing = wk.days[todayISO];
+
+  ['Cheio','Medio','Fraco'].forEach(t => {
+    document.getElementById('dt' + t).className = 'day-type-btn';
+  });
+
+  if (existing) {
+    selectDayType(existing.type, true);
+    document.getElementById('dayQuestoes').value = existing.questoes || 0;
+    dayFlashOn = !!existing.flashcard;
+    dayAulaOn = !!wk.aulaFeita;
+  } else {
+    document.getElementById('dayQuestoes').value = '';
+  }
+
+  updateFlashToggleUI();
+  updateAulaToggleUI();
+  document.getElementById('dayModal').classList.add('open');
+  setTimeout(() => document.getElementById('dayQuestoes').focus(), 100);
+}
+
+function closeDayModal() {
+  document.getElementById('dayModal').classList.remove('open');
+}
+
+document.getElementById('dayModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDayModal();
+});
+
+function selectDayType(type, silent) {
+  selectedDayType = type;
+  ['Cheio','Medio','Fraco'].forEach(t => {
+    document.getElementById('dt' + t.charAt(0).toUpperCase() + t.slice(1)).className = 'day-type-btn';
+  });
+  const map = {cheio:'Cheio', medio:'Medio', fraco:'Fraco'};
+  document.getElementById('dt' + map[type]).classList.add('sel-' + type);
+  if (!silent) {
+    const caps = {cheio: settings.capacidadeCheio, medio: settings.capacidadeMedio, fraco: 0};
+    document.getElementById('dayQuestoes').value = caps[type] || 0;
+    if (type === 'fraco') document.getElementById('dayQuestoes').disabled = true;
+    else document.getElementById('dayQuestoes').disabled = false;
+  }
+}
+
+function toggleFlashToday() {
+  dayFlashOn = !dayFlashOn;
+  updateFlashToggleUI();
+}
+
+function updateFlashToggleUI() {
+  const tog = document.getElementById('dayFlashToggle');
+  const dot = document.getElementById('dayFlashDot');
+  const lbl = document.getElementById('dayFlashLabel');
+  if (dayFlashOn) {
+    tog.classList.add('on');
+    dot.textContent = '✓';
+    lbl.textContent = 'Fiz flashcard hoje ✓';
+  } else {
+    tog.classList.remove('on');
+    dot.textContent = '';
+    lbl.textContent = 'Fiz flashcard hoje';
+  }
+}
+
+function toggleAulaToday() {
+  dayAulaOn = !dayAulaOn;
+  updateAulaToggleUI();
+}
+
+function updateAulaToggleUI() {
+  const tog = document.getElementById('dayAulaToggle');
+  const dot = document.getElementById('dayAulaDot');
+  const lbl = document.getElementById('dayAulaLabel');
+  if (dayAulaOn) {
+    tog.classList.add('on');
+    dot.textContent = '✓';
+    lbl.textContent = 'Aula da semana assistida ✓';
+  } else {
+    tog.classList.remove('on');
+    dot.textContent = '';
+    lbl.textContent = 'Assistiu aula desta semana';
+  }
+}
+
+function saveDayEntry() {
+  if (!selectedDayType) { showToast('Selecione o tipo de dia'); return; }
+  const q = parseInt(document.getElementById('dayQuestoes').value) || 0;
+  const todayISO = getTodayISO();
+  const wk = getThisWeekLog();
+  wk.days[todayISO] = { type: selectedDayType, questoes: q, flashcard: dayFlashOn };
+  wk.aulaFeita = dayAulaOn;
+  weeklyLog[getThisWeekKey()] = wk;
+  saveState();
+  closeDayModal();
+  renderDailySuggestion();
+  showToast('Dia registrado!');
+}
+
+// ══════════════════════════════════════════════
+//  DIET MODULE
+// ══════════════════════════════════════════════
+
+const MEAL_PLAN = {
+  treino: [
+    { id:'cafe',      name:'Café da manhã',    p:30, g:18, c:55,  kcal:502, ref:'V-Coffee + Whey + 2 ovos + cottage + pão integral' },
+    { id:'pretreino', name:'Pré-treino',        p:28, g:8,  c:85,  kcal:524, ref:'Whey/iogurte grego + banana' },
+    { id:'almoco',    name:'Almoço',            p:42, g:22, c:110, kcal:806, ref:'Frango/carne + arroz + legumes + azeite' },
+    { id:'lanche',    name:'Lanche da tarde',   p:22, g:12, c:60,  kcal:436, ref:'Iogurte grego + castanhas + fruta' },
+    { id:'jantar',    name:'Jantar',            p:23, g:11, c:69,  kcal:467, ref:'Ovo/peixe + batata doce + salada' }
+  ],
+  descanso: [
+    { id:'cafe',      name:'Café da manhã',    p:30, g:18, c:45,  kcal:462, ref:'V-Coffee + Whey + 2 ovos + cottage + pão integral' },
+    { id:'lanche_m',  name:'Lanche da manhã',  p:22, g:10, c:30,  kcal:298, ref:'Cottage + torrada integral' },
+    { id:'almoco',    name:'Almoço',           p:42, g:22, c:90,  kcal:726, ref:'Frango/carne + arroz + legumes + azeite' },
+    { id:'lanche',    name:'Lanche da tarde',  p:22, g:11, c:40,  kcal:347, ref:'Iogurte grego + castanhas' },
+    { id:'jantar',    name:'Jantar',           p:29, g:10, c:74,  kcal:502, ref:'Ovo/peixe + batata doce + salada' }
+  ]
+};
+
+function getTodayDietType() {
+  const todayISO = getTodayISO();
+  const gymSess = gymLog.sessions.find(s => s.date === todayISO);
+  if (gymSess) return 'treino';
+  const dayEntry = (weeklyLog[getThisWeekKey()] || {}).days || {};
+  if (dayEntry[todayISO] && dayEntry[todayISO].type === 'fraco') return 'descanso';
+  return 'treino'; // default
+}
+
+function getTodayDietLog() {
+  const todayISO = getTodayISO();
+  if (!dietLog[todayISO]) dietLog[todayISO] = { tipo: getTodayDietType(), refeicoes: {} };
+  return dietLog[todayISO];
+}
+
+function toggleMealDone(mealId) {
+  const log = getTodayDietLog();
+  if (!log.refeicoes[mealId]) {
+    log.refeicoes[mealId] = { feito: true };
+  } else {
+    log.refeicoes[mealId].feito = !log.refeicoes[mealId].feito;
+  }
+  saveState();
+  renderDieta();
+}
+
+function renderDieta() {
+  const el = document.getElementById('dieta-content');
+  const tipo = getTodayDietType();
+  const log = getTodayDietLog();
+  const meals = MEAL_PLAN[tipo];
+  const ds = settings.dieta;
+
+  // Compute totals from done meals only
+  let totP=0, totG=0, totC=0, totK=0;
+  meals.forEach(m => {
+    if (log.refeicoes[m.id] && log.refeicoes[m.id].feito) {
+      totP += m.p; totG += m.g; totC += m.c; totK += m.kcal;
+    }
+  });
+
+  const metaP = ds.metaProt, metaG = ds.metaGord;
+  const metaC = tipo === 'treino' ? ds.metaCarb_treino : ds.metaCarb_descanso;
+  const metaK = tipo === 'treino' ? ds.metaCal_treino : ds.metaCal_descanso;
+
+  const pctP = Math.min(100, Math.round(totP/metaP*100));
+  const pctG = Math.min(100, Math.round(totG/metaG*100));
+  const pctC = Math.min(100, Math.round(totC/metaC*100));
+  const pctK = Math.min(100, Math.round(totK/metaK*100));
+
+  const alertProt = totK > 0 && (meals.every(m => log.refeicoes[m.id]?.feito)) && totP < 120;
+
+  let html = `
+  <div class="diet-day-header">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--text);">Hoje — ${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit'})}</div>
+      <div style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:3px;">${metaK} kcal · P${metaP}g · G${metaG}g · C${metaC}g</div>
+    </div>
+    <span class="diet-type-badge ${tipo}">${tipo === 'treino' ? 'Dia de treino' : 'Dia de descanso'}</span>
+  </div>`;
+
+  if (alertProt) {
+    html += `<div class="diet-alert">⚠ Proteína abaixo de 120g — adicione uma fonte de proteína extra hoje</div>`;
+  }
+
+  html += `<div class="diet-macro-row">
+    ${[['P','Proteína',totP,metaP,pctP,'#4a9c6e'],['G','Gordura',totG,metaG,pctG,'#d4933a'],['C','Carbo',totC,metaC,pctC,'#4a82c4'],['K','Kcal',totK,metaK,pctK,'#c9a84c']].map(([k,lab,v,m,pct,col]) => `
+    <div class="diet-macro-col">
+      <div class="dm-label">${lab}</div>
+      <div class="dm-val">${v}${k==='K'?'':'g'}</div>
+      <div class="dm-pct">${pct}%</div>
+      <div class="dm-bar-track"><div class="dm-bar-fill" style="width:${pct}%;background:${col};"></div></div>
+    </div>`).join('')}
+  </div>`;
+
+  meals.forEach(m => {
+    const done = !!(log.refeicoes[m.id] && log.refeicoes[m.id].feito);
+    html += `<div class="diet-meal ${done ? 'done' : 'pending'}">
+      <div style="flex:1;min-width:100px;">
+        <div class="diet-meal-name">${m.name}</div>
+        <div class="diet-meal-macros">P${m.p}g · G${m.g}g · C${m.c}g · ${m.kcal}kcal</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px;">${m.ref}</div>
+      </div>
+      <button class="diet-meal-btn" onclick="toggleMealDone('${m.id}')">${done ? '✓ Feito' : 'Marcar'}</button>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  GYM MODULE
+// ══════════════════════════════════════════════
+
+const EXERCISE_BANK = {
+  'Costas espessura':['Remada curvada barra','Remada haltere unilateral','Remada cavalinho','Remada máquina','Remada serrote','Remada baixa cabo'],
+  'Costas largura':['Puxada frontal aberta','Puxada frontal fechada','Barra fixa pronada','Barra fixa supinada','Puxada neutra triângulo'],
+  'Bíceps':['Rosca direta barra','Rosca direta halteres','Rosca martelo','Rosca concentrada','Rosca cabo','Rosca scott'],
+  'Peitoral principal':['Supino reto barra','Supino reto halteres','Supino máquina','Crossover cabo reto','Peck deck'],
+  'Peitoral inclinado':['Supino inclinado halteres','Supino inclinado barra','Crossover inclinado cabo','Fly inclinado'],
+  'Tríceps':['Tríceps corda','Tríceps testa haltere','Mergulho lastrado','Tríceps francês','Tríceps barra EZ'],
+  'Quadríceps':['Agachamento livre','Agachamento no Smith','Hack squat','Leg press 45°','Agachamento búlgaro','Afundo com halteres'],
+  'Posterior de coxa':['Stiff barra','Stiff halteres','Cadeira flexora','Mesa flexora','RDL unilateral'],
+  'Glúteo':['Hip thrust barra','Hip thrust máquina','Abdução máquina','Agachamento sumô','Afundo reverso'],
+  'Panturrilha':['Panturrilha em pé (máquina)','Panturrilha sentado','Panturrilha no leg press','Panturrilha livre'],
+  'Ombro pressão':['Desenvolvimento halteres','Desenvolvimento barra','Desenvolvimento máquina','Arnold press','Push press'],
+  'Ombro lateral':['Elevação lateral halteres','Elevação lateral cabo','Elevação lateral máquina','W-raise'],
+  'Ombro posterior':['Face pull','Crucifixo invertido halteres','Remada alta','Band pull-apart'],
+  'Abdômen':['Prancha','Crunch bicicleta','Roda abdominal','Elevação de pernas','Dead bug','Ab wheel']
+};
+
+const GYM_STRUCTURE = {
+  A:[{group:'Costas espessura',series:4,repsMin:8,repsMax:12,intervalo:90,inc:2.5},{group:'Costas largura',series:4,repsMin:8,repsMax:12,intervalo:90,inc:2.5},{group:'Bíceps',series:3,repsMin:10,repsMax:12,intervalo:60,inc:1.25}],
+  B:[{group:'Peitoral principal',series:4,repsMin:8,repsMax:12,intervalo:90,inc:2.5},{group:'Peitoral inclinado',series:3,repsMin:10,repsMax:12,intervalo:90,inc:2.5},{group:'Tríceps',series:3,repsMin:10,repsMax:12,intervalo:60,inc:1.25}],
+  C:[{group:'Quadríceps',series:4,repsMin:8,repsMax:12,intervalo:120,inc:5},{group:'Posterior de coxa',series:3,repsMin:10,repsMax:12,intervalo:90,inc:2.5},{group:'Glúteo',series:3,repsMin:10,repsMax:12,intervalo:90,inc:5},{group:'Panturrilha',series:4,repsMin:12,repsMax:15,intervalo:60,inc:2.5}],
+  D:[{group:'Ombro pressão',series:4,repsMin:8,repsMax:12,intervalo:90,inc:2.5},{group:'Ombro lateral',series:3,repsMin:12,repsMax:15,intervalo:60,inc:1.25},{group:'Ombro posterior',series:3,repsMin:12,repsMax:15,intervalo:60,inc:1.25},{group:'Abdômen',series:3,repsMin:30,repsMax:60,intervalo:45,inc:0}]
+};
+
+const TRAIN_LABELS = { A:'Costas + Bíceps', B:'Peito + Tríceps', C:'Pernas', D:'Ombro + Abdômen' };
+
+function getLastSession(treino) {
+  return [...gymLog.sessions].reverse().find(s => s.treino === treino);
+}
+
+function calcSuggestedWeight(group, exercicio, estadoDia) {
+  const last = gymLog.sessions.slice().reverse().find(s => s.exercicios && s.exercicios[exercicio]);
+  if (!last) return null;
+  const ex = last.exercicios[exercicio];
+  if (!ex || !ex.series || ex.series.length === 0) return null;
+  const struct = Object.values(GYM_STRUCTURE).flat().find(e => e.group === group);
+  const inc = struct ? struct.inc : 2.5;
+  const pesoBase = ex.pesoUsado || ex.series[0]?.peso || 0;
+  const completouMax = ex.series.every(s => s.reps >= (struct ? struct.repsMax : 12));
+
+  let peso = completouMax ? pesoBase + inc : pesoBase;
+  if (estadoDia === 'cansado') peso = Math.max(0, pesoBase * 0.9);
+  if (estadoDia === 'exausto') peso = Math.max(0, pesoBase * 0.8);
+  return Math.round(peso * 4) / 4;
+}
+
+function getExercicioSelecionado(group, treino) {
+  return (gymLog.config[treino] && gymLog.config[treino][group] && gymLog.config[treino][group].exercicio)
+    || EXERCISE_BANK[group][0];
+}
+
+function openGymCheckin() {
+  gymSelectedTrain = null;
+  gymSelectedState = null;
+  ['A','B','C','D'].forEach(t => document.getElementById('gc'+t).classList.remove('active'));
+  ['Otimo','Bom','Cansado','Exausto'].forEach(t => document.getElementById('gc'+t).classList.remove('sel'));
+  document.getElementById('gymCheckinModal').classList.add('open');
+}
+
+function closeGymCheckin() {
+  document.getElementById('gymCheckinModal').classList.remove('open');
+}
+
+document.getElementById('gymCheckinModal').addEventListener('click', function(e) {
+  if (e.target === this) closeGymCheckin();
+});
+
+function selectGymTrain(t) {
+  gymSelectedTrain = t;
+  ['A','B','C','D'].forEach(x => {
+    document.getElementById('gc'+x).classList.toggle('active', x === t);
+  });
+}
+
+function selectGymState(s) {
+  gymSelectedState = s;
+  const map = {otimo:'Otimo',bom:'Bom',cansado:'Cansado',exausto:'Exausto'};
+  Object.keys(map).forEach(k => document.getElementById('gc'+map[k]).classList.toggle('sel', k === s));
+}
+
+function startGymSession() {
+  if (!gymSelectedTrain) { showToast('Selecione o treino'); return; }
+  if (!gymSelectedState) { showToast('Informe como está hoje'); return; }
+  activeGymSession = {
+    date: getTodayISO(), treino: gymSelectedTrain,
+    estadoDia: gymSelectedState, exercicios: {}
+  };
+  closeGymCheckin();
+  renderAcademia();
+}
+
+function registerSet(exercicio, serie, reps, peso) {
+  if (!activeGymSession) return;
+  if (!activeGymSession.exercicios[exercicio]) {
+    activeGymSession.exercicios[exercicio] = { series: [], pesoUsado: peso };
+  }
+  const ex = activeGymSession.exercicios[exercicio];
+  ex.series[serie] = { reps, peso };
+  if (peso > (ex.pesoUsado || 0)) ex.pesoUsado = peso;
+}
+
+function finishSession() {
+  if (!activeGymSession) return;
+  // Mark completouRepsMax per exercise
+  Object.entries(activeGymSession.exercicios).forEach(([ex, data]) => {
+    const struct = Object.values(GYM_STRUCTURE).flat().find(e => getExercicioSelecionado(e.group, activeGymSession.treino) === ex);
+    const rMax = struct ? struct.repsMax : 12;
+    data.completouRepsMax = data.series.every(s => (s.reps || 0) >= rMax);
+  });
+  gymLog.sessions.push(activeGymSession);
+  // Mark as treino day for diet
+  dietLog[activeGymSession.date] = dietLog[activeGymSession.date] || {};
+  dietLog[activeGymSession.date].tipo = 'treino';
+  activeGymSession = null;
+  saveState();
+  renderAcademia();
+  showToast('Treino salvo!');
+}
+
+function renderAcademia() {
+  const el = document.getElementById('academia-content');
+
+  // If there's an active session, render the session UI
+  if (activeGymSession) {
+    const treino = activeGymSession.treino;
+    const estadoDia = activeGymSession.estadoDia;
+    const structs = GYM_STRUCTURE[treino];
+    let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);">Treino ${treino} — ${TRAIN_LABELS[treino]}</div>
+        <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);margin-top:3px;">Estado: ${estadoDia}</div>
+      </div>
+      <button class="btn-save" onclick="finishSession()" style="font-size:12px;padding:8px 16px;">Finalizar treino</button>
+    </div>`;
+
+    structs.forEach(({group, series, repsMin, repsMax, intervalo}) => {
+      const exercicio = getExercicioSelecionado(group, treino);
+      const sugPeso = calcSuggestedWeight(group, exercicio, estadoDia);
+      const sessData = activeGymSession.exercicios[exercicio];
+
+      html += `<div class="gym-exercise">
+        <div class="gym-exercise-name">${group}</div>
+        <div class="gym-exercise-meta">${exercicio} · ${series}×${repsMin}–${repsMax} reps · ${intervalo}s intervalo</div>`;
+
+      if (sugPeso !== null) {
+        html += `<div class="gym-sugg">💡 Sugestão: ${sugPeso}kg</div>`;
+      }
+
+      html += `<div class="gym-sets">`;
+      for (let i = 0; i < series; i++) {
+        const saved = sessData && sessData.series[i];
+        const savedReps = saved ? saved.reps : '';
+        const savedPeso = saved ? saved.peso : (sugPeso || '');
+        html += `<div class="gym-set-row">
+          <span class="gym-set-label">S${i+1}</span>
+          <input class="gym-set-input" type="number" placeholder="reps" value="${savedReps}" min="0"
+            onchange="registerSet('${exercicio}',${i},parseInt(this.value)||0,parseFloat(document.getElementById('p_${exercicio}_${i}').value)||0)">
+          <span class="gym-set-unit">×</span>
+          <input class="gym-set-input" id="p_${exercicio}_${i}" type="number" placeholder="kg" value="${savedPeso}" min="0" step="0.25"
+            onchange="registerSet('${exercicio}',${i},parseInt(document.querySelectorAll('.gym-set-row')[${i}].querySelector('input').value)||0,parseFloat(this.value)||0)">
+          <span class="gym-set-unit">kg</span>
+        </div>`;
+      }
+      html += `</div></div>`;
+    });
+
+    el.innerHTML = html;
+    return;
+  }
+
+  // Main academia view
+  const todayISO = getTodayISO();
+  const todaySess = gymLog.sessions.find(s => s.date === todayISO);
+
+  let html = `<div style="margin-bottom:16px;">
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">Iniciar treino de hoje</div>
+    ${todaySess ? `<div style="padding:10px 14px;background:var(--green-dim);border:1px solid rgba(74,156,110,.3);border-radius:var(--radius);font-size:12px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-bottom:10px;">✓ Treino ${todaySess.treino} já registrado hoje</div>` : ''}
+    <button class="btn-save" onclick="openGymCheckin()" style="font-size:12px;padding:8px 18px;">${todaySess ? 'Novo treino' : 'Começar treino'}</button>
+  </div>`;
+
+  // History: last session per treino
+  html += `<div class="gym-section-title">Últimas sessões por treino</div>`;
+  ['A','B','C','D'].forEach(t => {
+    const last = getLastSession(t);
+    if (!last) {
+      html += `<div class="gym-hist-item"><div><div class="gym-hist-name">Treino ${t} — ${TRAIN_LABELS[t]}</div><div class="gym-hist-meta">Nenhuma sessão registrada</div></div></div>`;
+      return;
+    }
+    const exs = Object.entries(last.exercicios || {});
+    html += `<div class="gym-hist-item">
+      <div style="flex:1;">
+        <div class="gym-hist-name">Treino ${t} — ${TRAIN_LABELS[t]}</div>
+        <div class="gym-hist-meta">${last.date} · ${last.estadoDia}</div>
+        ${exs.slice(0,3).map(([ex,d]) => `<div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:2px;">${ex}: ${d.pesoUsado||'?'}kg × ${d.series.length} séries</div>`).join('')}
+      </div>
+    </div>`;
+  });
+
+  // Exercise config
+  html += `<div class="gym-section-title" style="margin-top:20px;">Exercícios selecionados</div>`;
+  Object.entries(GYM_STRUCTURE).forEach(([treino, structs]) => {
+    html += `<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">Treino ${treino} — ${TRAIN_LABELS[treino]}</div>`;
+    structs.forEach(({group}) => {
+      const selected = getExercicioSelecionado(group, treino);
+      const opts = EXERCISE_BANK[group].map(e => `<option value="${e}" ${e===selected?'selected':''}>${e}</option>`).join('');
+      html += `<div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;min-width:130px;">${group}</span>
+        <select onchange="setExercicio('${group}','${treino}',this.value)" style="flex:1;min-width:150px;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'JetBrains Mono',monospace;">${opts}</select>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+function setExercicio(group, treino, exercicio) {
+  if (!gymLog.config[treino]) gymLog.config[treino] = {};
+  if (!gymLog.config[treino][group]) gymLog.config[treino][group] = {};
+  gymLog.config[treino][group].exercicio = exercicio;
+  saveState();
+}
 
 // ══════════════════════════════════════════════
 //  ADAPTIVE REVIEW LOGIC
