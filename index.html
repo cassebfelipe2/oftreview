@@ -184,17 +184,19 @@ body::before {
   padding: 4px;
   margin-bottom: 20px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tab-btn {
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   background: none;
   border: none;
   color: var(--text3);
   font-family: 'Syne', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s;
@@ -1260,7 +1262,10 @@ function showTab(tab, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
-  if (btn) btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
   if (tab === 'calendario') renderCalendar();
   if (tab === 'adaptativo') renderAdaptativo();
 }
