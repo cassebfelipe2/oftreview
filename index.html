@@ -730,6 +730,68 @@ body::before {
   line-height: 1.4;
 }
 
+/* ── CALENDAR ── */
+.cal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.cal-title { font-size:16px; font-weight:700; color:var(--text); letter-spacing:-0.01em; }
+.cal-nav {
+  background:var(--bg3); border:1px solid var(--border); color:var(--text2);
+  width:32px; height:32px; border-radius:6px; cursor:pointer; font-size:16px;
+  display:flex; align-items:center; justify-content:center; transition:all 0.15s;
+}
+.cal-nav:hover { border-color:var(--border2); color:var(--text); }
+.cal-legend {
+  display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px;
+  padding:10px 14px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius);
+}
+.cal-leg-item {
+  display:flex; align-items:center; gap:5px; font-size:10px;
+  font-family:'JetBrains Mono',monospace; color:var(--text2);
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+.cal-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.dot-15  { background:var(--red); }
+.dot-45  { background:var(--amber); }
+.dot-90  { background:var(--green); }
+.dot-180 { background:var(--blue); }
+.dot-ada { background:#9b59b6; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+.cal-dow {
+  font-size:9px; font-family:'JetBrains Mono',monospace; color:var(--text3);
+  text-align:center; padding:6px 0 8px; text-transform:uppercase; letter-spacing:0.06em;
+}
+.cal-cell {
+  background:transparent; border:1px solid transparent;
+  border-radius:6px; padding:5px 4px; min-height:68px;
+}
+.cal-cell.has-events { background:var(--bg2); border-color:var(--border); }
+.cal-cell.today { border-color:rgba(201,168,76,0.5) !important; background:var(--bg2); }
+.cal-cell.today .cal-day-num { color:var(--gold); font-weight:700; }
+.cal-day-num { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--text3); margin-bottom:3px; }
+.cal-chips { display:flex; flex-direction:column; gap:2px; }
+.cal-chip {
+  font-size:8.5px; font-family:'JetBrains Mono',monospace;
+  padding:2px 4px; border-radius:3px; color:rgba(255,255,255,0.92);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.3;
+}
+.chip-15  { background:var(--red); }
+.chip-45  { background:var(--amber); }
+.chip-90  { background:var(--green); }
+.chip-180 { background:var(--blue); }
+.chip-ada { background:#9b59b6; }
+@media(max-width:600px) {
+  .cal-chip { font-size:7px; padding:1px 3px; }
+  .cal-cell { min-height:52px; padding:4px 3px; }
+}
+/* ── ADAPTIVE LIST ── */
+.ada-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:11px 14px; background:var(--bg2); border:1px solid var(--border);
+  border-left:3px solid #9b59b6; border-radius:var(--radius);
+  margin-bottom:8px; gap:12px; flex-wrap:wrap;
+}
+.ada-name { font-size:13px; font-weight:700; color:var(--text); }
+.ada-meta { font-size:10px; color:var(--text3); font-family:'JetBrains Mono',monospace; margin-top:2px; }
+.ada-next { font-family:'JetBrains Mono',monospace; font-size:12px; color:#9b59b6; font-weight:500; white-space:nowrap; }
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -799,10 +861,12 @@ body::before {
 
   <!-- TABS -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('revisoes')">Revisões</button>
-    <button class="tab-btn" onclick="showTab('conteudo')">Conteúdo</button>
-    <button class="tab-btn" onclick="showTab('historico')">Histórico</button>
-    <button class="tab-btn" onclick="showTab('todas')">Todas</button>
+    <button class="tab-btn active" onclick="showTab('revisoes',this)">Revisões</button>
+    <button class="tab-btn" onclick="showTab('conteudo',this)">Conteúdo</button>
+    <button class="tab-btn" onclick="showTab('historico',this)">Histórico</button>
+    <button class="tab-btn" onclick="showTab('todas',this)">Todas</button>
+    <button class="tab-btn" onclick="showTab('calendario',this)">Calendário</button>
+    <button class="tab-btn" onclick="showTab('adaptativo',this)">Adaptativo</button>
   </div>
 
   <!-- TAB: REVISÕES -->
@@ -830,6 +894,30 @@ body::before {
   <div class="tab-panel" id="panel-todas">
     <div class="section-title">Cronograma completo de revisões</div>
     <div id="todas-list"></div>
+  </div>
+
+  <!-- TAB: CALENDÁRIO -->
+  <div class="tab-panel" id="panel-calendario">
+    <div class="section-title">Calendário de revisões</div>
+    <div class="cal-header">
+      <button class="cal-nav" onclick="calChangeMonth(-1)">&#8592;</button>
+      <span class="cal-title" id="calMonthTitle"></span>
+      <button class="cal-nav" onclick="calChangeMonth(1)">&#8594;</button>
+    </div>
+    <div class="cal-legend">
+      <span class="cal-leg-item"><span class="cal-dot dot-15"></span>15d</span>
+      <span class="cal-leg-item"><span class="cal-dot dot-45"></span>45d</span>
+      <span class="cal-leg-item"><span class="cal-dot dot-90"></span>90d</span>
+      <span class="cal-leg-item"><span class="cal-dot dot-180"></span>180d</span>
+      <span class="cal-leg-item"><span class="cal-dot dot-ada"></span>Adaptativo</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <!-- TAB: ADAPTATIVO -->
+  <div class="tab-panel" id="panel-adaptativo">
+    <div class="section-title">Revisões adaptativas</div>
+    <div id="adaptativo-list"></div>
   </div>
 
 </div>
@@ -1009,12 +1097,16 @@ const REV_SOURCE = {
 
 let currentWeek = parseInt(localStorage.getItem('oft_week') || '8');
 let history = JSON.parse(localStorage.getItem('oft_history') || '[]');
+let adaptiveList = JSON.parse(localStorage.getItem('oft_adaptive') || '[]');
 let modalRevName = '';
 let openTopics = {};
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
 
 function saveState() {
   localStorage.setItem('oft_week', currentWeek);
   localStorage.setItem('oft_history', JSON.stringify(history));
+  localStorage.setItem('oft_adaptive', JSON.stringify(adaptiveList));
   if (sb && currentUser) {
     sb.from('oft_user_state').upsert({ user_id: currentUser.id, current_week: currentWeek }).then(() => {});
   }
@@ -1164,11 +1256,13 @@ function toggleTopics(key, btn) {
   btn.innerHTML = `<span class="arrow" style="transition:transform 0.2s;display:inline-block;transform:${openTopics[key]?'rotate(90deg)':'rotate(0deg)'}">&#9658;</span> ${openTopics[key] ? 'Ocultar' : 'Ver'} tópicos`;
 }
 
-function showTab(tab) {
+function showTab(tab, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tab === 'calendario') renderCalendar();
+  if (tab === 'adaptativo') renderAdaptativo();
 }
 
 // ── TRAIL MODAL ──
@@ -1222,6 +1316,7 @@ function saveTrail() {
   const dateStr = now.toLocaleDateString('pt-BR');
   const entry = { revision: modalRevName, week: currentWeek, feitas, acertos, flashcards: fc, date: dateStr };
   history.push(entry);
+  checkAndCreateAdaptive(entry);
   saveState();
   if (sb && currentUser) saveTrailToSupabase(entry);
   closeModal();
@@ -1260,6 +1355,166 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' && !modalOpen) changeWeek(-1);
   if (e.key === 'ArrowRight' && !modalOpen) changeWeek(1);
 });
+
+// ══════════════════════════════════════════════
+//  ADAPTIVE REVIEW LOGIC
+// ══════════════════════════════════════════════
+
+function checkAndCreateAdaptive(entry) {
+  if (!entry.feitas || entry.feitas < 10) return;
+  const pct = entry.acertos / entry.feitas;
+  if (pct >= 0.6) return; // só cria adaptativo se < 60%
+  const now = new Date();
+  const nextDate = new Date(now);
+  nextDate.setDate(nextDate.getDate() + 7);
+  const existing = adaptiveList.find(a => a.revision === entry.revision && !a.done);
+  if (existing) {
+    existing.nextDate = nextDate.toISOString().slice(0, 10);
+    existing.pct = Math.round(pct * 100);
+    existing.attempts = (existing.attempts || 1) + 1;
+  } else {
+    const ada = {
+      id: Date.now(),
+      revision: entry.revision,
+      pct: Math.round(pct * 100),
+      createdDate: now.toISOString().slice(0, 10),
+      nextDate: nextDate.toISOString().slice(0, 10),
+      done: false,
+      attempts: 1
+    };
+    adaptiveList.push(ada);
+    if (sb && currentUser) saveAdaptiveToSupabase(ada);
+  }
+}
+
+function renderAdaptativo() {
+  const el = document.getElementById('adaptativo-list');
+  const today = new Date().toISOString().slice(0, 10);
+  const pending = adaptiveList.filter(a => !a.done).sort((a, b) => a.nextDate.localeCompare(b.nextDate));
+  const done = adaptiveList.filter(a => a.done);
+  if (!adaptiveList.length) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:24px 0;text-align:center;">Nenhuma revisão adaptativa criada ainda.<br>Módulos com acerto &lt;60% geram revisões automáticas em 7 dias.</div>';
+    return;
+  }
+  let html = '';
+  if (pending.length) {
+    html += `<div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Pendentes (${pending.length})</div>`;
+    pending.forEach(a => {
+      const overdue = a.nextDate < today;
+      const dateLabel = overdue
+        ? `<span style="color:var(--red)">Vencida — ${fmtDateBR(a.nextDate)}</span>`
+        : `Próxima: ${fmtDateBR(a.nextDate)}`;
+      html += `<div class="ada-item">
+        <div>
+          <div class="ada-name">${a.revision}</div>
+          <div class="ada-meta">Acerto: ${a.pct}% · ${a.attempts} tentativa${a.attempts > 1 ? 's' : ''} · Criada: ${fmtDateBR(a.createdDate)}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span class="ada-next">${dateLabel}</span>
+          <button onclick="doneAdaptive(${a.id})" title="Marcar como concluída" style="background:rgba(155,89,182,0.15);border:1px solid rgba(155,89,182,0.3);color:#9b59b6;cursor:pointer;border-radius:6px;padding:5px 10px;font-size:11px;font-family:'JetBrains Mono',monospace;">✓ OK</button>
+        </div>
+      </div>`;
+    });
+  }
+  if (done.length) {
+    html += `<div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin:18px 0 10px;">Concluídas (${done.length})</div>`;
+    done.forEach(a => {
+      html += `<div class="ada-item" style="opacity:.45;border-left-color:var(--text3);">
+        <div>
+          <div class="ada-name" style="text-decoration:line-through;">${a.revision}</div>
+          <div class="ada-meta">Acerto inicial: ${a.pct}%</div>
+        </div>
+        <span class="ada-next" style="color:var(--text3);">Concluída</span>
+      </div>`;
+    });
+  }
+  el.innerHTML = html;
+}
+
+function doneAdaptive(id) {
+  const ada = adaptiveList.find(a => a.id === id);
+  if (ada) {
+    ada.done = true;
+    saveState();
+    renderAdaptativo();
+    if (sb && currentUser) {
+      sb.from('oft_adaptive').update({ done: true }).eq('local_id', id).eq('user_id', currentUser.id).then(() => {});
+    }
+  }
+}
+
+function fmtDateBR(isoDate) {
+  if (!isoDate) return '';
+  const [y, m, d] = isoDate.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// ══════════════════════════════════════════════
+//  CALENDAR LOGIC
+// ══════════════════════════════════════════════
+
+function calChangeMonth(delta) {
+  calMonth += delta;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function buildScheduleEventMap() {
+  const map = {};
+  Object.entries(REVISIONS).forEach(([weekStr, revs]) => {
+    const week = parseInt(weekStr);
+    const sched = SCHEDULE[week];
+    if (!sched) return;
+    const [d, m, y] = sched.date.split('/').map(Number);
+    const isoKey = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    if (!map[isoKey]) map[isoKey] = [];
+    revs.forEach(r => map[isoKey].push({ name: r.name, d: r.d }));
+  });
+  return map;
+}
+
+function renderCalendar() {
+  const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  document.getElementById('calMonthTitle').textContent = `${monthNames[calMonth]} ${calYear}`;
+  const grid = document.getElementById('calGrid');
+  const schedMap = buildScheduleEventMap();
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const today = new Date();
+  // adaptive events keyed by ISO date
+  const adaMap = {};
+  adaptiveList.filter(a => !a.done).forEach(a => {
+    if (!adaMap[a.nextDate]) adaMap[a.nextDate] = [];
+    adaMap[a.nextDate].push(a.revision);
+  });
+  // day of week headers
+  const dows = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let html = dows.map(d => `<div class="cal-dow">${d}</div>`).join('');
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  // blank cells
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-cell"></div>';
+  for (let day = 1; day <= daysInMonth; day++) {
+    const iso = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const schedEvents = schedMap[iso] || [];
+    const adaEvents = adaMap[iso] || [];
+    const hasEvents = schedEvents.length > 0 || adaEvents.length > 0;
+    const isToday = iso === todayISO;
+    let chips = '';
+    schedEvents.slice(0, 3).forEach(e => {
+      chips += `<div class="cal-chip chip-${e.d}" title="${e.name} · ${e.d}d">${e.name}</div>`;
+    });
+    if (schedEvents.length > 3) chips += `<div class="cal-chip" style="background:var(--bg3);color:var(--text3)">+${schedEvents.length-3}</div>`;
+    adaEvents.slice(0, 2).forEach(name => {
+      chips += `<div class="cal-chip chip-ada" title="Adaptativo: ${name}">${name}</div>`;
+    });
+    html += `<div class="cal-cell${hasEvents?' has-events':''}${isToday?' today':''}">
+      <div class="cal-day-num">${day}</div>
+      <div class="cal-chips">${chips}</div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
 
 // ══════════════════════════════════════════════
 //  SUPABASE FUNCTIONS
@@ -1314,6 +1569,7 @@ async function loadFromSupabase() {
         localStorage.setItem('oft_history', JSON.stringify(history));
       }
     }
+    await loadAdaptiveFromSupabase();
     showToast('✓ Sincronizado');
   } catch(e) { console.warn('Supabase load:', e); }
 }
@@ -1345,6 +1601,32 @@ async function saveTrailToSupabase(entry) {
     }).select().single();
     if (data) entry._id = data.id;
   } catch(e) { console.warn('Supabase trail save:', e); }
+}
+
+async function saveAdaptiveToSupabase(ada) {
+  if (!sb || !currentUser) return;
+  try {
+    await sb.from('oft_adaptive').insert({
+      user_id: currentUser.id, local_id: ada.id, revision: ada.revision,
+      pct: ada.pct, created_date: ada.createdDate, next_date: ada.nextDate,
+      done: ada.done, attempts: ada.attempts
+    });
+  } catch(e) { console.warn('Supabase adaptive save:', e); }
+}
+
+async function loadAdaptiveFromSupabase() {
+  if (!sb || !currentUser) return;
+  try {
+    const { data } = await sb.from('oft_adaptive').select('*').eq('user_id', currentUser.id);
+    if (data && data.length > 0) {
+      adaptiveList = data.map(a => ({
+        id: a.local_id, revision: a.revision, pct: a.pct,
+        createdDate: a.created_date, nextDate: a.next_date,
+        done: a.done, attempts: a.attempts
+      }));
+      localStorage.setItem('oft_adaptive', JSON.stringify(adaptiveList));
+    }
+  } catch(e) { console.warn('Supabase adaptive load:', e); }
 }
 
 // ── AUTH UI ──
